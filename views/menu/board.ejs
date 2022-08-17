@@ -1,0 +1,51 @@
+<script type="text/javascript">
+
+  $(document).ready(function () {
+    
+  });
+
+  function fn_setSelect() {
+    $("#search").submit();
+  }
+
+  function fn_submit(cur_page) {
+    document.getElementById('cur_page').setAttribute('value', cur_page);
+    $('#search').submit();
+  }
+
+  function select_all(target) {
+    let checkboxes = document.querySelectorAll('input[type="checkbox"]')
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = target.checked;
+    })
+  }
+</script>
+
+<body>
+  <form id="form" method="post" action="download_doc">
+    <table>
+      <colgroup>
+        <col id="col0" width="10%">
+        <col id="col1" width="*">
+      </colgroup>
+      
+      <tbody>
+        <tr>
+          <th><input type="checkbox" onclick="javascript:select_all(this)"></th>
+          <th>출원번호</th>
+          <th>내용</th>
+        </tr>
+    <% if (typeof(work) !== "undefined") { %>
+      <% work.forEach((element, index) => { %>
+        <tr id="tr<%= index %>" onclick="fn_gridDetailOnclick(this, 'gridTr<%= index %>')">
+          <td style="text-align: center;max-width:150px; overflow: hidden;text-overflow:ellipsis;white-space:nowrap;"><input class="input_val" type="checkbox" name="filename" value="<%= element.application_number%>"></td>
+          <td style="text-align: center;max-width:150px; overflow: hidden;text-overflow:ellipsis;white-space:nowrap;"><%= element.application_number%></td>
+          <td style="text-align: center;max-width:150px; overflow: hidden;text-overflow:ellipsis;white-space:nowrap;"><%= element.content%></td>
+        </tr>
+      <% }) %>
+    <% } %>
+      </tbody>
+    </table>
+    <button type="submit">다운로드</button>
+  </form>
+</body>

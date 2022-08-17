@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+	<script src="/lib/jquery-1.10.2.js"></script>
+
+	<style>
+		input::placeholder {
+			color: #66666673;
+			font-style: italic;
+		}
+	</style>
+
+	<script type="text/javascript">	
+
+	function fn_id_dup_check_reset() {
+		$('#id_dup_check').val('false');
+		return;
+	}
+
+		// 아이디중복확인, , 필수값 체크, 정규식 체크 - 형식 : 영문, 숫자, _, - 만 가능. 5~20글자 
+		function fn_idChek(){
+			let flag = true;
+			let form = $("#myform")
+			var idVal = $("#id").val(); 
+			
+			var idReg = /^[A-Za-z0-9_\-]{5,20}$/;
+			if (idVal.match(idReg) == null || idVal.match(idReg) == '' || idVal == null || idVal == '') { 
+				alert('아이디 형식에 맞춰 입력해 주세요.'); 
+				$('#id').focus();
+				flag = false;
+				return;
+			} else {
+			
+			$.ajax({
+				url : '/id_dup_check',
+				data : {id:$('#id').val()},   //전송파라미터
+				type : 'POST',
+				dataType : 'json',
+				success : function(result) {
+					var d = result.id_check;
+					if(d == "ok"){
+						alert("사용가능한 아이디 입니다.");
+						$('#id_dup_check').val('true');
+						$('#pw').focus();
+					}else{
+						alert("사용중인 아이디입니다. 다시 입력해 주세요.");
+						$('#id_dup_check').val('false');
+						$('#id').focus();
+						return false;
+					}
+				},
+				error : function() { // Ajax 전송 에러 발생시 실행
+					alert('오류가 발생했습니다.\n관리자에게 문의 바랍니다.','e');
+				},
+				complete : function(result) { // success, error 실행 후 최종적으로 실행
+				}
+			});	
+			}
+		}
+		
+		// 저장 버튼
+		function fn_submit(){
+			var idVal = $("#id").val(); 
+			if(idVal == null || idVal ==''){
+				alert("아이디를 입력해 주세요.");
+				$('#id').focus();
+				flag = false;
+				return;
+			}
+			
+			// 비밀번호 필수값 체크, 정규식 체크	- 영문, 숫자, 특수문자를 조합한 9~20자리
+			var pwVal = $("#pw").val(); 
+			var pwReg = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{9,20}$/; // 검증에 사용할 정규식 변수 regExp에 저장 
+			if (pwVal.match(pwReg) == null || pwVal.match(pwReg) == '' || pwVal == null || pwVal == '') { 
+				alert('비밀번호 형식에 맞춰 입력해 주세요.'); 
+				$('#pw').val('');
+				$('#pw').focus();
+				return;
+			}	
+
+			// 비밀번호확인 필수값체크
+			if($('#pw_cfm').val() == ''){
+				alert('비밀번호 확인을 입력해 주세요!');
+				$('#pw_cfm').focus();
+				return;
+			}
+
+			// 비밀번호와 비밀번호확인 값이 같은지 확인
+			if($('#pw').val() != '' && $('#pw_cfm').val() != ''){
+				if($('#pw').val() != $('#pw_cfm').val()){
+					$('#pw_cfm').val('');
+					$('#pw_cfm').focus();
+					alert('새 비밀번호와 확인이 서로 다릅니다. 다시 입력해 주세요!.');		
+					return;
+				}
+			}
+
+			// 이름 필수값 체크, 정규식 체크	 - 형식 : 한글 2~5자리	
+			var nmVal = $("#name").val(); 
+			var nmReg = /^[가-힣]{2,5}$/; // 검증에 사용할 정규식 변수 regExp에 저장 
+			if (nmVal.match(nmReg) == null || nmVal.match(nmReg) == '' || nmVal == null || nmVal == '') { 
+				alert('이름 형식에 맞춰 입력해 주세요.'); 
+				$('#name').val('');
+				$('#name').focus();
+				return;
+			}
+
+			// 핸드폰번호 필수값체크, 정규식 체크 - 형식 : 000-0000-0000
+			var mpVal = $("#phone").val(); 
+			var mpReg = /^(?:(010-\d{4})|(01[1|6|7|8|9]-\d{3,4}))-(\d{4})$/; // 검증에 사용할 정규식 변수 regExp에 저장 
+			if (mpVal.match(mpReg) == null || mpVal.match(mpReg) == '' || mpVal == null || mpVal == '') { 
+				alert('휴대전화번호 형식에 맞춰 입력해 주세요.'); 
+				$('#phone').val('');
+				$('#phone').focus();
+				return;
+			}
+			
+			$("#regist_form").attr('action', '/member_regist')
+			$("#regist_form").attr('method', 'POST')
+			$("#regist_form").submit();
+		}
+
+	</script>
+
+	<title>AIoT</title>
+
+	</head>
+
+	<body>
+		<form id="regist_form" action="/member_regist2" method="post">
+			<p><span>로그인 정보</span>
+			<span style="color:#C00000;"><strong>*</strong></span>항목은 필수 입력 항목입니다.</p>
+			
+			<p><span style="color:#C00000;"><strong>*</strong></span>ID</p>
+			<input type="text" id="id" name="id" maxlength="30" style="ime-mode:active" placeholder="영문, 숫자조합 5~20글자" onchange="javascript:fn_id_dup_check_reset()"> 
+			<button type="button" onclick="javascript:fn_idChek();"><b>아이디 중복 확인</b></button>
+			
+			<p><span style="color:#C00000;"><strong>*</strong></span>비밀번호</p>
+			<input type="password" id="pw" name="pw" maxlength="30" placeholder="영문, 숫자, 특수문자를 조합한 9~20자리"> 
+			<input type="hidden" id="origin_pw" value="" maxlength="30">
+			<p><span style="color:#C00000;"><strong>*</strong></span>비밀번호 확인</p>
+			<input type="hidden" id="id_dup_check" value="false">
+		
+			<input type="password" id="pw_cfm" name="pw_cfm" maxlength="30" placeholder="영문, 숫자, 특수문자를 조합한 9~20자리"> 
+			
+			<p><span>회원 정보</span></p>
+			<p><span style="color:#C00000;"><strong>*</strong></span>이름</p>
+			<input type="text" id="name" name="name" maxlength="30" style="ime-mode:active" placeholder="한글 2~5자리"> 
+
+			<p><span style="color:#C00000;"><strong>*</strong></span>담당자 휴대전화</p>
+			<input type="text" id="phone" name="phone" maxlength="30" style="ime-mode:active" placeholder="000-0000-0000"> 
+			
+
+			<p><span>권한</span></p>
+			<select name="auth_cd" id="auth_cd">
+				<% if(typeof all_auth_cds !== "undefined") { %>
+					<% all_auth_cds.forEach(function(auth_cd, index) { %>
+						<option value="<%= auth_cd.auth_cd %>"><%= auth_cd.auth_nm %></option>  
+					<% }) %>
+				<% } %>
+			</select>
+
+			<p><button type="button" id="submit_button" onclick="javascript:fn_submit();"><span></span>등록</button></p>
+		</form>
+
+	</body>
+</html>

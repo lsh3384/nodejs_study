@@ -1,0 +1,46 @@
+<% var top_menu_url = '#' %>
+
+<% if(typeof top_menus !== "undefined") { %>
+  <% top_menus.forEach(function(top_menu) { %>
+    <% if(top_menu.MENU_USE_AUTH.includes(mnger_info.AUTH_CD)) { %>
+      <li class="menu_btn">
+
+        <% for(let i = 0; i < top_sub_menus.length; i++) { %>
+          <% if (top_menu.MENU_ID === top_sub_menus[i].MENU_PRTS_ID) {%>
+            <% if (top_sub_menus[i].MENU_USE_AUTH.includes(mnger_info.AUTH_CD)) { %> 
+              <% top_menu_url = top_sub_menus[i].MENU_URL %>
+              <% break %>
+            <% } %>
+          <% } %>
+        <% } %>
+
+        <!-- top 메뉴 -->
+        <a href="<%= top_menu_url %>" class="menu_btn transition" onclick=""><%= top_menu.MENU_NM %></a>
+
+        <!-- sub 메뉴 -->
+        <ul class="drop_ul">				
+          <% top_sub_menus.forEach(function(top_sub_menu) { %>
+            <% if(top_sub_menu.MENU_USE_AUTH.includes(mnger_info.AUTH_CD)) { %>
+              
+              <% if (top_menu.MENU_ID === top_sub_menu.MENU_PRTS_ID) { %>
+                <li class="transition">
+                  <a href="<%= top_sub_menu.MENU_URL%>"  class="transition" onclick=""><%= top_sub_menu.MENU_NM %></a>
+                </li>
+              <% } %>
+
+            <% } %>
+          <% }) %>
+        </ul>
+        
+      </li>
+    <% } %>
+  <% }) %>
+<% } %>
+
+<% if(typeof member_info !== "undefined") { %>
+  <div class="user"><strong><%= member_info.name %> </strong>님</div>
+  <!-- <a href="#" onclick="javascript:fn_topMenuGoUrl('/regist/checkPw.do', 'TOP_2_1', 'TOP_2');">회원정보 수정</a> -->
+  <a href="/logout">로그아웃</a>
+<% } else { %>
+  <a href="/login">로그인</a>
+<% } %>
