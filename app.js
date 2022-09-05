@@ -32,6 +32,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+
 /* flash */
 var flash = require('connect-flash');
 app.use(flash())
@@ -73,4 +74,5 @@ var port = 3030;
 /* server listen */
 const server = app.listen(port, function () {
   console.log("server on! http://localhost:" + port);
+  console.log('server')
  });
