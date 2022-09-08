@@ -27,7 +27,7 @@ app.use(
 
 
 /* Passport */
-var passport = require("./service/passport");
+var passport = require("./services/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -61,14 +61,4 @@ app.use(bodyParser.json());
 app.use(require("./routes/indexRoutes"));
 
 
-
-
-
-/* Port setting */
-var port = 3030;
-
-/* server listen */
-const server = app.listen(port, function () {
-  console.log("server on! http://localhost:" + port);
-  console.log('server')
- });
+module.exports = app;

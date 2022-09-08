@@ -6,4 +6,6 @@ class UserService extends DbService {
 
     this.dao = this.getDao('user');
   }
+
+  
 }
