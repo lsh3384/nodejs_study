@@ -1,23 +1,23 @@
-const getConnection = require('../model/common/db')
+// const getConnection = require('../model/common/db')
 
-function pw_check(id, pw) {
-  return new Promise((resolve, reject)=> {
-    getConnection().query('select count(*) as count from member where id=? and pw=HEX(AES_ENCRYPT(?,\'secret_key\'))',[id, pw], function(err, data) {
-      console.log('pw_check');
-      if(err) {
-        reject(err);
-      }
+// function pw_check(id, pw) {
+//   return new Promise((resolve, reject)=> {
+//     getConnection().query('select count(*) as count from member where id=? and pw=HEX(AES_ENCRYPT(?,\'secret_key\'))',[id, pw], function(err, data) {
+//       console.log('pw_check');
+//       if(err) {
+//         reject(err);
+//       }
       
-      let pw_check_result = data[0].count;
-      if (pw_check_result == 1) {
-        resolve(true);
-      } else {
-        console.log(data)
-        resolve(false);
-      }
-    });
-  });
-}
+//       let pw_check_result = data[0].count;
+//       if (pw_check_result == 1) {
+//         resolve(true);
+//       } else {
+//         console.log(data)
+//         resolve(false);
+//       }
+//     });
+//   });
+// }
 
 var passport = require('passport');
 // serialize & deserialize User
@@ -50,9 +50,9 @@ passport.use('local-login',
       let id = req.body.id;
       let pw = req.body.pw;
       console.log('pw_check!!')
-      let pw_check_result = await pw_check(id, pw);
+      // let pw_check_result = await pw_check(id, pw);
       
-      if(pw_check_result === true) {
+      if(true) {
         return done(null, {
           id: id
         });

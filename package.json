@@ -11,9 +11,11 @@
     "fast-xml-parser": "^4.0.9",
     "flash": "^1.1.0",
     "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "sequelize": "^6.21.4",
     "xml": "^1.0.1"
   }
 }
