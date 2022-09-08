@@ -18,4 +18,14 @@ class DbService {
       this.initialized = true;
     }
   }
+
+  getDao(key) {
+    if (this.models[key]){
+      return this.models[key];
+    }
+
+    return null;
+  }
+
+  
 }
