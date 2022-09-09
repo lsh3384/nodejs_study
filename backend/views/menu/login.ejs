@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="/lib/jquery-1.10.2.js"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script type="text/javascript">
+			
+			$(document).ready(function() {
+				var errorCode = '${loginErrorCode}';
+				
+				if(errorCode == ''){
+					errorCode = '${param.loginErrorCode}';
+				}
+				if(errorCode == 'ID_ERROR'){
+					alert('아이디가 존재하지 않습니다.');
+				}else if(errorCode == 'PW_ERROR'){
+					alert('비밀번호가 일치하지 않습니다.');
+				}else if(errorCode == 'SS_ERROR'){
+					alert('세션이 종료되었습니다.');
+				}
+			});
+
+			function fn_login(){
+				var loginId = $('#id').val();
+				var loginPw = $('#pw').val();
+				
+				if(loginId == ''){
+					alert('아이디를 입력하세요.');
+					return;
+				}
+				
+				if(loginPw == ''){
+					alert('비밀번호를 입력하세요.');
+					return;
+				}
+				
+				$('#form').attr('action', '/login_action');
+				$('#form').submit();
+				pageLoadingShow();
+			}
+			
+			function enterkey() {
+						if (window.event.keyCode == 13) {
+								fn_login(); // 엔터키가 눌렸을 때 실행할 내용
+						}
+			}
+
+		</script>
+			
+			<title>TIDEA</title>
+
+	</head>
+	
+	<body>
+
+    <form id="form" name="form" method="post">
+      <input type="text" id="id" name="id" placeholder="아이디" class="login_id" value=""><i class="fas fa-user absolute"></i>
+      <input type="password" id="pw" name="pw" placeholder="비밀번호" onkeyup="enterkey();" class="login_pw" value=""><i class="fas fa-unlock-alt absolute"></i><br>
+      <button type="button" class="clear login_button" onclick="javascript:fn_login();"><b>로 그 인</b></button>
+		</form>
+		
+    
+    
+    <div class="footer login_footer">
+			<p>
+				<font color="white">
+				</font>
+			</p>
+			<p class="copy">
+				<font color="white">copyrights 2022 TIDEA . All rights reserved. </font>
+			</p>
+		</div>
+
+	</body>
+</html>
