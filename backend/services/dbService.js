@@ -1,4 +1,6 @@
 const UserDao = require('../models/dao/userDao');
+const CompanyDao = require('../models/dao/companyDao');
+
 const DbHander = require('../helpers/dbHandler');
 
 let _dbService = new WeakMap();
@@ -18,6 +20,7 @@ class DbService {
   _init() {
     if(!this.initialized) {
       this.models['user'] = UserDao;
+      this.models['company'] = CompanyDao;
 
       this.initialized = true;
     }
