@@ -6,7 +6,7 @@ const DbService = require('./services/dbService');
 const dbServiceInstance = DbService.getInstance();
 
 (async () => {
-    await dbServiceInstance.sync();    
+    await dbServiceInstance.sync();
   })();
 
 

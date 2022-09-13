@@ -29,6 +29,14 @@ app.use(
   })
 );
 
+/* cors */
+const cors = require('cors');
+let corsOptions = {
+  origin: "*",
+  Credential: true,
+}
+app.use(cors(corsOptions));
+
 
 /* Passport */
 var passport = require("./services/passport");

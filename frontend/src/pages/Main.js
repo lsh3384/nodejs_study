@@ -4,7 +4,9 @@ import './Main.css'
 
 import { MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import axios from 'axios';
 
 const items = [
   {
@@ -31,13 +33,35 @@ const items = [
 
 function Main() {
   const [current, setCurrent] = useState('');
+  const [data, setData] = useState('data');
 
   const onClick = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
   };
 
-  return <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />;
+  useEffect( () => {
+    let completed = false;
+    console.log('using useEffect');
+    async function get() {
+      const result = await axios.get(
+        `http://localhost:3030/user/test`
+      );
+      console.log(result.data.data);
+      if (!completed) setData(result.data.data);
+    }
+    get();
+    return () => {
+      completed = true;
+    }
+  }, []);
+
+  return (
+    <>
+      <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+      <p>{data}</p>
+    </>
+  );
 }
 
 export default Main;
