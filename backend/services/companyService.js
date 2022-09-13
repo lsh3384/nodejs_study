@@ -14,6 +14,12 @@ class CompanyService extends DbService {
     });
   }
 
+  createCompany({name, phone, address}) {
+    return this.dao.create({
+      name, phone, address,
+    })
+  }
+
   createDummyCompany() {
     return this.dao.create({
       name: "dummy",

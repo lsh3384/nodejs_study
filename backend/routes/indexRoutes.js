@@ -9,4 +9,4 @@ const Router = Express.Router();
 Router.use('/user', UserRouter);
 Router.use('/company', CompanyRouter);
 
-module.exports = Router
+module.exports = Router;
