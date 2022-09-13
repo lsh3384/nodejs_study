@@ -16,6 +16,15 @@ class UserService extends DbService {
       ]
     });
   }
+
+  insertUser(name, email, password) {
+    console.log('insertUser');
+    return this.dao.create({
+      name: name,
+      email: email,
+      password: password,
+    })
+  }
 }
 
 module.exports = UserService;

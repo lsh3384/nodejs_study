@@ -56,10 +56,21 @@ function Main() {
     }
   }, []);
 
+  const postData = () => {
+    axios.post(
+      'http://localhost:3030/user/insertUser',
+      {
+        name: 'lee',
+        email: 'test@email.com',
+        password: 'pw',
+      }
+    )
+  }
   return (
     <>
       <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
       <p>{data}</p>
+      <Button onClick={postData} type="primary">테스트 데이터 보내기</Button>
     </>
   );
 }
