@@ -1,6 +1,7 @@
+import Request from "./Request"
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { Button, Menu, Table } from "antd";
+import { Button, Menu, Table, Modal  } from "antd";
 import "./Main.css";
 
 import { MailOutlined, SettingOutlined } from "@ant-design/icons";
@@ -40,6 +41,20 @@ function Main() {
     address: "",
   });
   const [companyInfos, setCompanyInfos] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
 
   const navigate = useNavigate();
   const onClick = (e) => {
@@ -194,6 +209,13 @@ function Main() {
         />
       }
       {/* <Table>dataSource={companyInfos} columns={columns}</Table> */}
+
+      <Button type="primary" onClick={showModal}>
+        Open Modal
+      </Button>
+      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <Request></Request>
+      </Modal>
     </>
   );
 }
