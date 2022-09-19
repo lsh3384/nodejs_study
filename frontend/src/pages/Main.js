@@ -33,6 +33,7 @@ const items = [
   },
 ];
 
+
 function Main() {
   const [current, setCurrent] = useState("");
   const [companyInfo, setCompanyInfo] = useState({
@@ -42,6 +43,23 @@ function Main() {
   });
   const [companyInfos, setCompanyInfos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const onSelectChange = (newSelectedRowKeys) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === 'Disabled User',
+      // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -177,38 +195,17 @@ function Main() {
       </Button>
 
       <h1>등록된 정보</h1>
-      {/* {companyInfos.map((element) => {
-        return (
-          <div key={element.id}>
-            <p>
-              {element.name} {element.phone} {element.address}
-            </p>
-          </div>
-        );
-      })} */}
-
       {
         // companyInfos.length &&
         <Table
-          columns={columns}
-          dataSource={companyInfos}
-          onChange={onTableChange}
-          rowKey={(render) => render.id}
-          pagination={{
-            position: ["bottomCenter"],
-          }}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: event => { 
-                // console.log('clicked!', rowIndex, record);
-                
-                navigate('/request', { state: record });
-              },
-            }
-          }}
-        />
+        rowSelection={{
+          ...rowSelection,
+        }}
+        columns={columns}
+        dataSource={companyInfos}
+      />
+        // <Table rowSelection={rowSelection} columns={columns} dataSource={companyInfos} />
       }
-      {/* <Table>dataSource={companyInfos} columns={columns}</Table> */}
 
       <Button type="primary" onClick={showModal}>
         Open Modal
