@@ -1,65 +1,44 @@
-import Request from "./Request"
+import Request from "./Request";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
-import { Button, Menu, Table, Modal  } from "antd";
+import { Button, Menu, Modal, Breadcrumb, Layout } from "antd";
 import "./Main.css";
 
-import { MailOutlined, SettingOutlined } from "@ant-design/icons";
-import React, { useState, useEffect } from "react";
+import {
+  DesktopOutlined,
+  FileOutlined,
+  PieChartOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
+import React, { useState } from "react";
 import axios from "axios";
 
+const { Header, Content, Footer, Sider } = Layout;
+
+function getItem(label, key, icon, children) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
 
 const items = [
-  {
-    label: "요청하기",
-    key: "mail",
-    icon: <MailOutlined />,
-  },
-  {
-    label: "QnA",
-    key: "SubMenu",
-    icon: <SettingOutlined />,
-  },
-  {
-    label: (
-      <>
-        <Link to="/login">
-          <Button type="primary">로그인</Button>
-        </Link>
-      </>
-    ),
-    key: "alipay",
-  },
+  getItem(<Link to="/login">로그인</Link>, "1", <PieChartOutlined />),
+  getItem(<Link to="/regist">회원가입</Link>, "2", <DesktopOutlined />),
+  getItem(<Link to="/company">회사등록</Link>, "sub1", <UserOutlined />),
+  // getItem("Team", "sub2", <TeamOutlined />, [
+  //   getItem("Team 1", "6"),
+  //   getItem("Team 2", "8"),
+  // ]),
+  // getItem("Files", "9", <FileOutlined />),
 ];
 
-
 function Main() {
-  const [current, setCurrent] = useState("");
-  const [companyInfo, setCompanyInfo] = useState({
-    name: "",
-    phone: "",
-    address: "",
-  });
-  const [companyInfos, setCompanyInfos] = useState([]);
+  const [collapsed, setCollapsed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -73,144 +52,80 @@ function Main() {
     setIsModalOpen(false);
   };
 
-
-  const navigate = useNavigate();
-  const onClick = (e) => {
-    console.log("click ", e);
-    setCurrent(e.key);
-  };
-
-  const getValue = (e) => {
-    const { name, value } = e.target;
-    setCompanyInfo((prevState) => {
-      console.log(prevState);
-
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
-    console.log(companyInfo.name);
-    console.log({ ...companyInfo });
-  };
-
-  useEffect(() => {
-    let completed = false;
-    async function get() {
-      const result = await axios.get(
-        `http://localhost:3030/company/getAllCompanies`
-      );
-      console.log(result.data);
-      if (!completed) {
-        setCompanyInfos(result.data);
-      }
-    }
-    get();
-    return () => {
-      completed = true;
-    };
-  }, []);
-
-  const postData = async () => {
-    async function get() {
-      const result = await axios.get(
-        `http://localhost:3030/company/getAllCompanies`
-      );
-      setCompanyInfos(result.data);
-    }
-
-    let result = await axios.post("http://localhost:3030/company/createCompany", {
-      ...companyInfo,
-    });
-    
-    console.log('-------------');
-    console.log(result);
-
-    get();
-  };
-
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-  ];
-
-  const onTableChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
-  };
-
-  
-
   return (
     <>
-      <Menu
-        onClick={onClick}
-        selectedKeys={[current]}
-        mode="horizontal"
-        items={items}
-      />
-
-      <p>
-        <input
-          className="title-input"
-          type="text"
-          placeholder="이름"
-          onChange={getValue}
-          name="name"
-        />
-      </p>
-      <p>
-        <input
-          className="title-input"
-          type="text"
-          placeholder="전화번호"
-          onChange={getValue}
-          name="phone"
-        />
-      </p>
-      <p>
-        <input
-          className="title-input"
-          type="text"
-          placeholder="주소"
-          onChange={getValue}
-          name="address"
-        />
-      </p>
-
-      <Button onClick={postData} type="primary">
-        테스트 데이터 보내기
-      </Button>
-
-      <h1>등록된 정보</h1>
-      {
-        // companyInfos.length &&
-        <Table
-        rowSelection={{
-          ...rowSelection,
+      <Layout
+        style={{
+          minHeight: "100vh",
         }}
-        columns={columns}
-        dataSource={companyInfos}
-      />
-        // <Table rowSelection={rowSelection} columns={columns} dataSource={companyInfos} />
-      }
+      >
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+        >
+          <div className="logo" />
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={["1"]}
+            mode="inline"
+            items={items}
+          />
+        </Sider>
+        <Layout className="site-layout">
+          <Header
+            className="site-layout-background"
+            style={{
+              padding: 0,
+            }}
+          />
+          <Content
+            style={{
+              margin: "0 16px",
+            }}
+          >
+            <Breadcrumb
+              style={{
+                margin: "16px 0",
+              }}
+            >
+              <Breadcrumb.Item>User</Breadcrumb.Item>
+              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            </Breadcrumb>
+            <div
+              className="site-layout-background"
+              style={{
+                padding: 24,
+                minHeight: 360,
+              }}
+            >
+              This is gonna be awesome!
+            </div>
+          </Content>
+          <Footer
+            style={{
+              textAlign: "center",
+            }}
+          >
+            SH Coorperation ©2022 Created by LEE
+          </Footer>
+        </Layout>
+      </Layout>
+
+      <Link to="/login">
+        <Button type="primary">로그인</Button>
+      </Link>
 
       <Button type="primary" onClick={showModal}>
         Open Modal
       </Button>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         <Request></Request>
       </Modal>
     </>
