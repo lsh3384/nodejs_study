@@ -27,6 +27,12 @@ class CompanyService extends DbService {
       address: "Daejeon",
     });
   }
+
+  deleteCompanies({id}) {
+    return this.dao.destroy({
+      where: { id: id}
+    })
+  }
 }
 
 module.exports = CompanyService;

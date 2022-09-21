@@ -28,7 +28,7 @@ function getItem(label, key, icon, children) {
 const items = [
   getItem(<Link to="/login">로그인</Link>, "1", <PieChartOutlined />),
   getItem(<Link to="/regist">회원가입</Link>, "2", <DesktopOutlined />),
-  getItem(<Link to="/company">회사등록</Link>, "sub1", <UserOutlined />),
+  getItem(<Link to="/company">회사등록</Link>, "3", <UserOutlined />),
   // getItem("Team", "sub2", <TeamOutlined />, [
   //   getItem("Team 1", "6"),
   //   getItem("Team 2", "8"),

@@ -4,7 +4,7 @@ class ComapnyController {
   static getAllCompanies(req, res) {
     const companyService = DbServiceManager.getCompanyServiceInstance();
     companyService.findAllCompanies().then((result) => {
-      console.log(result);
+      // console.log(result);
       res.json(result.map(company => {
         return company.dataValues;
       }))
@@ -14,19 +14,31 @@ class ComapnyController {
   static createDummyCompany(req, res) {
     const companyService = DbServiceManager.getCompanyServiceInstance();
     companyService.createDummyCompany().then((result) => {
-      console.log(result);
       res.json(result);
     })
   }
 
   static createCompany(req, res) {
     const companyService = DbServiceManager.getCompanyServiceInstance();
-
+    // console.log('!!!!!!!!!!!!!!!!!!!')
+    // console.log(req.body);
+    // console.log(req);
     companyService.createCompany(req.body).then((result)=> {
-      console.log(result);
+      // console.log(result);
       res.json(result);
     })
   }
+
+  static deleteCompanies(req, res) {
+    const companyService = DbServiceManager.getCompanyServiceInstance();
+    console.log('!!!!!!!!!!!!!!!!!!!')
+    console.log(req.body);
+    
+    companyService.deleteCompanies(req.body).then((result)=> {
+      res.json(result);
+    })
+  }
+
 
   static test(req, res) {
     console.log(req.body);

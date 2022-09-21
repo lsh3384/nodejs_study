@@ -1,109 +1,152 @@
 import { Link } from "react-router-dom";
-import { Button, Menu, Table, Modal, Form, Input, Checkbox  } from "antd";
+import { Button, Menu, Table, Modal, Form, Input, Checkbox } from "antd";
 import { MailOutlined, SettingOutlined } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 
-
 const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-  ];
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "Phone",
+    dataIndex: "phone",
+    key: "phone",
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
+  },
+];
 
 function Company() {
-    const [companyInfo, setCompanyInfo] = useState({
-        name: "",
-        phone: "",
-        address: "",
-      });
-    const [companyInfos, setCompanyInfos] = useState([]);
+  const [companyInfo, setCompanyInfo] = useState({
+    name: "",
+    phone: "",
+    address: "",
+  });
+  const [companyInfos, setCompanyInfos] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
 
-    const getValue = (e) => {
+  const getValue = (e) => {
     const { name, value } = e.target;
-    
-    setCompanyInfo((prevState) => {
-        console.log(prevState);
+    console.log(name, value);
 
-        return {
+    setCompanyInfo((prevState) => {
+      console.log(prevState);
+
+      return {
         ...prevState,
         [name]: value,
-        };
+      };
     });
+  };
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+      setSelectedRows(selectedRowKeys);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === "Disabled User",
+      // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
+
+
+  const onFinish = (values) => {
+    console.log("Success:", values);
+    postData(values);
+  };
+
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+
+  useEffect(() => {
+    let completed = false;
+    async function get() {
+      const result = await axios.get(
+        `http://localhost:3030/company/getAllCompanies`
+      );
+      console.log(result.data);
+      if (!completed) {
+        setCompanyInfos(
+          result.data.map((row) => {
+            return {
+              ...row,
+              key: row.id,
+            };
+          })
+        );
+      }
+    }
+    get();
+    return () => {
+      completed = true;
     };
+  }, []);
 
-    const rowSelection = {
-        onChange: (selectedRowKeys, selectedRows) => {
-          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-        getCheckboxProps: (record) => ({
-          disabled: record.name === 'Disabled User',
-          // Column configuration not to be checked
-          name: record.name,
-        }),
-      };
+  const postData = async (data) => {
+    async function get() {
+      const result = await axios.get(
+        `http://localhost:3030/company/getAllCompanies`
+      );
+      setCompanyInfos(result.data);
+    }
+    console.log(companyInfo);
+    let result = await axios.post(
+      "http://localhost:3030/company/createCompany",
+      {
+        ...data,
+      }
+    );
+
+    console.log("-------------");
+    console.log(result);
+
+    get();
+  };
 
 
-      const onFinish = (values) => {
-        console.log("Success:", values);
-      };
-    
-      const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
-      };
-    
+  const deleteData = async () => {
+    const delete_result = await axios.post(
+      'http://localhost:3030/company/deleteCompanies',
+      {
+        id: selectedRows
+      }
+    )
+    async function deleteRows() {
 
-    useEffect(() => {
-        let completed = false;
-        async function get() {
-          const result = await axios.get(
-            `http://localhost:3030/company/getAllCompanies`
-          );
-          console.log(result.data);
-          if (!completed) {
-            setCompanyInfos(result.data);
-          }
-        }
-        get();
-        return () => {
-          completed = true;
+    }
+
+    const result = await axios.get(
+      `http://localhost:3030/company/getAllCompanies`
+    );
+    setCompanyInfos(
+      result.data.map((row) => {
+        return {
+          ...row,
+          key: row.id,
         };
-      }, []);
+      })
+    );
+  }
 
-      const postData = async () => {
-        async function get() {
-          const result = await axios.get(
-            `http://localhost:3030/company/getAllCompanies`
-          );
-          setCompanyInfos(result.data);
-        }
-    
-        let result = await axios.post("http://localhost:3030/company/createCompany", {
-          ...companyInfo,
-        });
-        
-        console.log('-------------');
-        console.log(result);
-    
-        get();
-      };
-
-    return (
-      <>
-        <div style={{ textAlign: "center" }}>
+  return (
+    <>
+      <div style={{ textAlign: "center" }}>
         <Form
           name="basic"
           labelCol={{
@@ -158,8 +201,6 @@ function Company() {
             <Input />
           </Form.Item>
 
-
-
           <Form.Item
             wrapperCol={{
               offset: 0,
@@ -171,22 +212,33 @@ function Company() {
             </Button>
           </Form.Item>
         </Form>
-        </div>
+      </div>
 
-        <h1>등록된 정보</h1>
+      <h1>등록된 정보</h1>
       {
-        // companyInfos.length &&
-        <Table
-        rowSelection={{
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={companyInfos}
-      />
-        // <Table rowSelection={rowSelection} columns={columns} dataSource={companyInfos} />
+        <>
+          <Button type="primary" onClick={deleteData}>
+            삭제
+          </Button>
+          <Table
+            rowSelection={{
+              ...rowSelection,
+            }}
+            columns={columns}
+            dataSource={companyInfos}
+            pagination={{
+              position: ["bottomCenter"],
+            }}
+          />
+          {/* <Table
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={companyInfos}
+          /> */}
+        </>
       }
-      </>
-    );
+    </>
+  );
 }
 
 export default Company;
