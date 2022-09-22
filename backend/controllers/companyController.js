@@ -20,25 +20,17 @@ class ComapnyController {
 
   static createCompany(req, res) {
     const companyService = DbServiceManager.getCompanyServiceInstance();
-    // console.log('!!!!!!!!!!!!!!!!!!!')
-    // console.log(req.body);
-    // console.log(req);
     companyService.createCompany(req.body).then((result)=> {
-      // console.log(result);
       res.json(result);
     })
   }
 
   static deleteCompanies(req, res) {
     const companyService = DbServiceManager.getCompanyServiceInstance();
-    console.log('!!!!!!!!!!!!!!!!!!!')
-    console.log(req.body);
-    
     companyService.deleteCompanies(req.body).then((result)=> {
       res.json(result);
     })
   }
-
 
   static test(req, res) {
     console.log(req.body);
