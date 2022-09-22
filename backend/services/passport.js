@@ -1,23 +1,24 @@
 // const getConnection = require('../model/common/db')
 
-// function pw_check(id, pw) {
-//   return new Promise((resolve, reject)=> {
-//     getConnection().query('select count(*) as count from member where id=? and pw=HEX(AES_ENCRYPT(?,\'secret_key\'))',[id, pw], function(err, data) {
-//       console.log('pw_check');
-//       if(err) {
-//         reject(err);
-//       }
+function pw_check(id, pw) {
+  return new Promise((resolve, reject)=> {
+    
+    getConnection().query('select count(*) as count from member where id=? and pw=HEX(AES_ENCRYPT(?,\'secret_key\'))',[id, pw], function(err, data) {
+      console.log('pw_check');
+      if(err) {
+        reject(err);
+      }
       
-//       let pw_check_result = data[0].count;
-//       if (pw_check_result == 1) {
-//         resolve(true);
-//       } else {
-//         console.log(data)
-//         resolve(false);
-//       }
-//     });
-//   });
-// }
+      let pw_check_result = data[0].count;
+      if (pw_check_result == 1) {
+        resolve(true);
+      } else {
+        console.log(data)
+        resolve(false);
+      }
+    });
+  });
+}
 
 var passport = require('passport');
 // serialize & deserialize User
