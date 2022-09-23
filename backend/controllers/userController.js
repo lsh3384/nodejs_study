@@ -15,8 +15,9 @@ class UserController {
 
   static insertUser(req, res) {
     console.log('/insertUser');
+    console.log(req.body);
     const userService = DbServiceManager.getUserServiceInstance();
-    userService.insertUser(req.body.name, req.body.email, req.body.password).then((result) => {
+    userService.insertUser(req.body).then((result) => {
       console.log('insertion completed!');
     });
   }

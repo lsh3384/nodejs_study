@@ -6,9 +6,8 @@ const DbHandler = require('../../helpers/dbHandler')
 
 const UserDao = DbHandler.getDbInstance().define('user', {
   id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     primaryKey: true,
-    autoIncrement: true,
   },
   name: {
     type: Sequelize.STRING,

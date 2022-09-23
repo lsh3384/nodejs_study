@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { Button, Checkbox, Form, Input } from "antd";
+import axios from "axios";
 
 function Login() {
   const onFinish = (values) => {
-    console.log("Success:", values);
-  };
+    axios.post('http://localhost:3030/user/login_action', {...values})
+    console.log("Success:", values);  };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);

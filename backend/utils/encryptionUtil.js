@@ -1,10 +1,10 @@
 const Bcrypt = require('bcryptjs')
 
-let exports = module.exports = {}
+exports = module.exports = {}
 
 exports.hash = function(clearText) {
     return new Promise((resolve, reject) => {
-        Bcrypt.genSalt(SecurityConstant.seedGenerationRound, (error, salt) => {
+        Bcrypt.genSalt(12, (error, salt) => {
             if(error) {
                 reject(error);
             } else {

@@ -1,26 +1,8 @@
-// const getConnection = require('../model/common/db')
-
-function pw_check(id, pw) {
-  return new Promise((resolve, reject)=> {
-    
-    getConnection().query('select count(*) as count from member where id=? and pw=HEX(AES_ENCRYPT(?,\'secret_key\'))',[id, pw], function(err, data) {
-      console.log('pw_check');
-      if(err) {
-        reject(err);
-      }
-      
-      let pw_check_result = data[0].count;
-      if (pw_check_result == 1) {
-        resolve(true);
-      } else {
-        console.log(data)
-        resolve(false);
-      }
-    });
-  });
-}
-
 var passport = require('passport');
+
+const DbServiceManager = require('../services/dbServiceManager');
+
+
 // serialize & deserialize User
 // 처음 로그인할 때만 실행하여 sessionID 저장
 passport.serializeUser(async function(user, done) {
@@ -50,15 +32,15 @@ passport.use('local-login',
       console.log(req.body.id)
       let id = req.body.id;
       let pw = req.body.pw;
-      console.log('pw_check!!')
-      // let pw_check_result = await pw_check(id, pw);
+
+      const userService = DbServiceManager.getUserServiceInstance();
+      let validate_result = userService.validatePassword(pw, id).then((result) => result )
       
-      if(true) {
+      if(validate_result) {
         return done(null, {
           id: id
         });
       } else {
-        // req.flash('info', 'flash is back!');
         return done(null, false, { message: 'Incorrect Password'} ); 
       }
     }

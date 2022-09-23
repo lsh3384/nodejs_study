@@ -1,12 +1,16 @@
-/* express */
 const express = require("express");
-const app = express(); // 클라이언트와 통신
+const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session);
+const cors = require('cors');
+const path = require("path");
+const bodyParser = require("body-parser");
 
 const Config = require('./config');
+const AuthMiddleware = require("./middlewares/authMiddleware");
 
-/* login & session */
-var session = require("express-session");
-var MySQLStore = require("express-mysql-session")(session);
+
+const app = express(); // 클라이언트와 통신
+
 let express_mysql_seesion_options = {
   host: Config.dbHost,
 	port: Config.dbPort,
@@ -29,8 +33,6 @@ app.use(
   })
 );
 
-/* cors */
-const cors = require('cors');
 let corsOptions = {
   origin: "*",
   Credential: true,
@@ -38,39 +40,17 @@ let corsOptions = {
 app.use(cors(corsOptions));
 
 
-/* Passport */
-var passport = require("./services/passport");
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(AuthMiddleware.initialize());
+app.use(AuthMiddleware.session());
 
-
-/* flash */
 var flash = require('connect-flash');
 app.use(flash())
 
-
-/* view */
-app.set("view engine", "ejs");
-var expressLayouts = require("express-ejs-layouts");
-app.use(expressLayouts);
-// app.set("layout extractScripts", true);
-app.set("layout extractStyles", true);
-app.set("layout", "common/layout");
-
-
-/* static folder */
-const path = require("path");
 app.use(express.static(path.join(__dirname, "/static")));
 
-
-/* req.body parser */
-var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-console.log('router setting')
-/* router */
-app.use('/test', function(){ console.log('test')})
 app.use(require("./routes/indexRoutes"));
 
 module.exports = app;

@@ -1,8 +1,11 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
 
+import axios from "axios";
+
 const App = () => {
   const onFinish = (values) => {
+    axios.post('http://localhost:3030/user/insertUser', {...values})
     console.log("Success:", values);
   };
 
@@ -31,6 +34,18 @@ const App = () => {
           autoComplete="off"
         >
           <Form.Item
+            label="이름"
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: "이름을 입력해주세요.",
+              },
+            ]}
+          >
+            <Input placeholder="이름을 입력해주세요."/>
+          </Form.Item>
+          <Form.Item
             label="아이디"
             name="id"
             rules={[
@@ -45,7 +60,7 @@ const App = () => {
 
           <Form.Item
             label="비밀번호"
-            name="pw"
+            name="password"
             rules={[
               {
                 required: true,
@@ -56,7 +71,7 @@ const App = () => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             label="전화번호"
             name="phone"
             rules={[
@@ -67,7 +82,7 @@ const App = () => {
             ]}
           >
             <Input/>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label="이메일"
