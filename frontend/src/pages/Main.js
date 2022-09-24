@@ -46,8 +46,8 @@ const items = [
   // getItem(<Link to="/login">로그인</Link>, "1", <PieChartOutlined />),
   // getItem(<Link to="/regist">회원가입</Link>, "2", <DesktopOutlined />),
   // getItem(<Link to="/company">회사등록</Link>, "3", <UserOutlined />),
-  getItem("로그인", "login", <PieChartOutlined />),
-  getItem("회원가입", "regist", <DesktopOutlined />),
+  // getItem("로그인", "login", <PieChartOutlined />),
+  // getItem("회원가입", "regist", <DesktopOutlined />),
   getItem("회사등록", "request", <UserOutlined />),
   // getItem("Team", "sub2", <TeamOutlined />, [
   //   getItem("Team 1", "6"),
@@ -76,6 +76,7 @@ function Main() {
   const onClick = (e) => {
     console.log('click ', e);
     console.log('click ', e);
+
     setCurrent(e.key);
   };
 
@@ -106,20 +107,34 @@ function Main() {
             style={{
               padding: 0,
             }}
-          />
+          >
+            <Button
+              type="primary"
+              size="small"
+              style={{
+                marginLeft: "10px",
+              }}
+              onClick={()=>setCurrent('login')}
+            >
+              로그인
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              style={{
+                marginLeft: "10px",
+              }}
+              onClick={()=>setCurrent('regist')}
+            >
+              회원가입
+            </Button>
+          </Header>
+
           <Content
             style={{
               margin: "0 16px",
             }}
           >
-            <Breadcrumb
-              style={{
-                margin: "16px 0",
-              }}
-            >
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
             <div
               className="site-layout-background"
               style={{
@@ -128,7 +143,6 @@ function Main() {
               }}
             >
               <Component state={current}></Component>
-              This is gonna be awesome!
             </div>
           </Content>
           <Footer
@@ -141,22 +155,22 @@ function Main() {
         </Layout>
       </Layout>
 
-      <Link to="/login">
+      {/* <Link to="/login">
         <Button type="primary">로그인</Button>
       </Link>
 
       <Button type="primary" onClick={showModal}>
         Open Modal
-      </Button>
+      </Button> */}
 
-      <Modal
+      {/* <Modal
         title="Basic Modal"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
       >
         <Request></Request>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

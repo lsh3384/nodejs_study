@@ -3,9 +3,11 @@ import { Button, Checkbox, Form, Input } from "antd";
 import axios from "axios";
 
 function Login() {
-  const onFinish = (values) => {
-    axios.post('http://localhost:3030/user/login_action', {...values})
-    console.log("Success:", values);  };
+  const onFinish = async (values) => {
+    console.log("Success:", values);  
+    let result = await axios.post('http://localhost:3030/user/login_action', {...values})
+    console.log(result);
+  };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
