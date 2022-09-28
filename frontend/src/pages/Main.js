@@ -1,23 +1,18 @@
-import Login from './Login';
+import Login from "./Login";
 import Request from "./Request";
 import Regist from "./Regist";
 
-import { Link } from "react-router-dom";
-import { Button, Menu, Modal, Breadcrumb, Layout } from "antd";
+// import { Link } from "react-router-dom";
+import { Button, Menu, Layout } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import store, { changeLogin, changePage } from "../modules/ducks";
 import "./Main.css";
 
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
 import axios from "axios";
 const { Header, Content, Footer, Sider } = Layout;
-
 
 function getItem(label, key, icon, children) {
   return {
@@ -33,13 +28,14 @@ function Component(props) {
     <>
       {
         {
+          main: <></>,
           login: <Login />,
           regist: <Regist />,
           request: <Request />,
         }[props.state]
       }
     </>
-  )
+  );
 }
 
 const items = [
@@ -59,7 +55,10 @@ const items = [
 function Main() {
   const [collapsed, setCollapsed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [current, setCurrent] = useState("");
+  // const [current, setCurrent] = useState("");
+  const current = useSelector((state) => state.page);
+  const userInfo = useSelector((state) => state.userInfo);
+  const dispatch = useDispatch();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -74,10 +73,11 @@ function Main() {
   };
 
   const onClick = (e) => {
-    console.log('click ', e);
-    console.log('click ', e);
+    console.log("click ", e);
+    console.log("click ", e);
 
-    setCurrent(e.key);
+    // setCurrent(e.key);
+    dispatch(changePage(e.key));
   };
 
   return (
@@ -108,26 +108,49 @@ function Main() {
               padding: 0,
             }}
           >
-            <Button
-              type="primary"
-              size="small"
-              style={{
-                marginLeft: "10px",
-              }}
-              onClick={()=>setCurrent('login')}
-            >
-              로그인
-            </Button>
-            <Button
-              type="primary"
-              size="small"
-              style={{
-                marginLeft: "10px",
-              }}
-              onClick={()=>setCurrent('regist')}
-            >
-              회원가입
-            </Button>
+            {userInfo.id ? (
+              <>
+                <>{userInfo.id}님</>
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{
+                    marginLeft: "10px",
+                  }}
+                  onClick={() => {
+                    dispatch(changePage("login"));
+                    dispatch(
+                      changeLogin({ status: "false", id: "", name: "" })
+                    );
+                  }}
+                >
+                  로그아웃
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{
+                    marginLeft: "10px",
+                  }}
+                  onClick={() => dispatch(changePage("login"))}
+                >
+                  로그인
+                </Button>
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{
+                    marginLeft: "10px",
+                  }}
+                  onClick={() => dispatch(changePage("regist"))}
+                >
+                  회원가입
+                </Button>
+              </>
+            )}
           </Header>
 
           <Content

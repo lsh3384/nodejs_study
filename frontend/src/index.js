@@ -6,13 +6,18 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import 'antd/dist/antd.min.css';
 
+import store from './modules/ducks';
+import {Provider} from 'react-redux';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-
-      <App />
-
-  </BrowserRouter>
+  <>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function
