@@ -3,7 +3,7 @@ import React from "react";
 
 import axios from "axios";
 
-const App = () => {
+const Regist = () => {
   const onFinish = (values) => {
     axios.post('http://localhost:3030/user/insertUser', {...values})
     console.log("Success:", values);
@@ -113,4 +113,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Regist;

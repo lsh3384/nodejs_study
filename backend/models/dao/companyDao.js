@@ -2,24 +2,24 @@ const Sequelize = require('sequelize');
 
 const DbHandler = require('../../helpers/dbHandler')
 
-const CompanyDao = DbHandler.getDbInstance().define('company', {
+const PostDao = DbHandler.getDbInstance().define('post', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  name: {
+  writer: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  phone: {
+  title: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  address: {
+  content: {
     type: Sequelize.STRING,
     allowNull: false,
-  }
+  },
 })
 
-module.exports = CompanyDao;
+module.exports = PostDao;

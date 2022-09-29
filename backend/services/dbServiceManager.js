@@ -1,8 +1,8 @@
 const UserService = require('./userService');
-const CompanyService = require('./companyService');
+const PostService = require('./postService');
 
 const USER_SERVICE = { name: 'UserService' };
-const COMPANY_SERVICE = { name: 'CompanyService' };
+const POST_SERVICE = { name: 'PostService' };
 
 
 let serviceMap = new WeakMap();
@@ -18,7 +18,7 @@ class DbServiceManager{
     if (instance === undefined) {
       if (serviceType === USER_SERVICE) {
         instance = new UserService();
-      } else if ( serviceType === COMPANY_SERVICE ) {
+      } else if ( serviceType === POST_SERVICE ) {
         instance = new CompanyService();
       }
       else {
@@ -34,7 +34,7 @@ class DbServiceManager{
   }
   static getCompanyServiceInstance() {
     console.log('getCompanyServiceInstance');
-    return DbServiceManager.getServiceInstance(COMPANY_SERVICE);
+    return DbServiceManager.getServiceInstance(POST_SERVICE);
   }
 }
 

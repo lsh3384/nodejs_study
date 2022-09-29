@@ -1,6 +1,6 @@
 import Login from "./Login";
-import Request from "./Request";
 import Regist from "./Regist";
+import Post from "./Post";
 
 // import { Link } from "react-router-dom";
 import { Button, Menu, Layout } from "antd";
@@ -31,7 +31,7 @@ function Component(props) {
           main: <></>,
           login: <Login />,
           regist: <Regist />,
-          request: <Request />,
+          post: <Post />,
         }[props.state]
       }
     </>
@@ -44,7 +44,7 @@ const items = [
   // getItem(<Link to="/company">회사등록</Link>, "3", <UserOutlined />),
   // getItem("로그인", "login", <PieChartOutlined />),
   // getItem("회원가입", "regist", <DesktopOutlined />),
-  getItem("회사등록", "request", <UserOutlined />),
+  getItem("게시글", "post", <UserOutlined />),
   // getItem("Team", "sub2", <TeamOutlined />, [
   //   getItem("Team 1", "6"),
   //   getItem("Team 2", "8"),
@@ -54,29 +54,14 @@ const items = [
 
 function Main() {
   const [collapsed, setCollapsed] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [current, setCurrent] = useState("");
   const current = useSelector((state) => state.page);
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   const onClick = (e) => {
     console.log("click ", e);
     console.log("click ", e);
-
-    // setCurrent(e.key);
     dispatch(changePage(e.key));
   };
 
@@ -178,22 +163,6 @@ function Main() {
         </Layout>
       </Layout>
 
-      {/* <Link to="/login">
-        <Button type="primary">로그인</Button>
-      </Link>
-
-      <Button type="primary" onClick={showModal}>
-        Open Modal
-      </Button> */}
-
-      {/* <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Request></Request>
-      </Modal> */}
     </>
   );
 }
