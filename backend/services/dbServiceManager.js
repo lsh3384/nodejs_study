@@ -19,7 +19,7 @@ class DbServiceManager{
       if (serviceType === USER_SERVICE) {
         instance = new UserService();
       } else if ( serviceType === POST_SERVICE ) {
-        instance = new CompanyService();
+        instance = new PostService();
       }
       else {
         instance = null;
@@ -32,8 +32,8 @@ class DbServiceManager{
     console.log('getUserServiceInstance');
     return DbServiceManager.getServiceInstance(USER_SERVICE);
   }
-  static getCompanyServiceInstance() {
-    console.log('getCompanyServiceInstance');
+  static getPostServiceInstance() {
+    console.log('getPostServiceInstance');
     return DbServiceManager.getServiceInstance(POST_SERVICE);
   }
 }

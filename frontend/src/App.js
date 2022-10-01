@@ -6,6 +6,7 @@ import Main from './pages/Main';
 import Login from './pages/Login';
 import Regist from './pages/Regist';
 import Post from './pages/Post';
+import PostList from './pages/PostList';
 import Test from './pages/Test';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path="/login" element={<Login/>} />
       <Route path="/regist" element={<Regist/>} />
       <Route path="/post" element={<Post/>} />
+      <Route path="/postList" element={<PostList/>} />
       <Route path="/test" element={<Test/>} />
     </Routes>
   );

@@ -3,7 +3,7 @@ const DbService = require('./dbService')
 class PostService extends DbService {
   constructor() {
     super();
-    this.dao = this.getDao('company');
+    this.dao = this.getDao('post');
   }
 
   findAllPosts() {
@@ -14,9 +14,9 @@ class PostService extends DbService {
     });
   }
 
-  createPost({name, phone, address}) {
+  createPost({title, content, writer}) {
     return this.dao.create({
-      name, phone, address,
+      title, content, writer,
     })
   }
 

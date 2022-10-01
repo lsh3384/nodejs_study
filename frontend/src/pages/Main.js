@@ -1,11 +1,12 @@
 import Login from "./Login";
 import Regist from "./Regist";
 import Post from "./Post";
+import PostList from "./PostList";
 
 // import { Link } from "react-router-dom";
 import { Button, Menu, Layout } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import store, { changeLogin, changePage } from "../modules/ducks";
+import { changeLogin, changePage } from "../modules/ducks";
 import "./Main.css";
 
 import { UserOutlined } from "@ant-design/icons";
@@ -35,6 +36,7 @@ function Component(props) {
           login: <Login />,
           regist: <Regist />,
           post: <Post />,
+          postList: <PostList />,
         }[props.state]
       }
     </>
@@ -47,7 +49,7 @@ const items = [
   // getItem(<Link to="/company">회사등록</Link>, "3", <UserOutlined />),
   // getItem("로그인", "login", <PieChartOutlined />),
   // getItem("회원가입", "regist", <DesktopOutlined />),
-  getItem("게시글", "post", <UserOutlined />),
+  getItem("게시글", "postList", <UserOutlined />),
   // getItem("Team", "sub2", <TeamOutlined />, [
   //   getItem("Team 1", "6"),
   //   getItem("Team 2", "8"),
@@ -57,7 +59,7 @@ const items = [
 
 function Main() {
   const [collapsed, setCollapsed] = useState(false);
-  const current = useSelector((state) => state.page);
+  const currentPage = useSelector((state) => state.page);
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -168,7 +170,7 @@ function Main() {
                 minHeight: 360,
               }}
             >
-              <Component state={current}></Component>
+              <Component state={currentPage}></Component>
             </div>
           </Content>
           <Footer

@@ -1,82 +1,83 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
-import { Button, Form, Input, Table } from "antd";
+import {useSelector, useDispatch} from 'react-redux';
+import store, { changeLogin, changePage } from "../modules/ducks";
+
+import { Button, Form, Input } from "antd";
 import axios from "axios";
+const { TextArea } = Input;
 
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-  },
-];
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Disabled User",
-    age: 99,
-    address: "Sidney No. 1 Lake Park",
-  },
-];
 
 const Post = () => {
-  const [selectionType, setSelectionType] = useState("checkbox");
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === "Disabled User",
-      // Column configuration not to be checked
-      name: record.name,
-    }),
+    const userInfo = useSelector(state => state.userInfo)
+
+  const onFinish = (values) => {
+
+    let post = {...values, writer: userInfo.id,}
+    axios.post("http://localhost:3030/post/createPost", { ...post });
+    console.log("Success:", post);
+    // console.log(values.title);
+    // console.log(values.content);
+    // console.log(userInfo.id);
+    // console.log(userInfo.name);
   };
 
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
     <>
-      <Table
-        rowSelection={{
-          type: selectionType,
-          ...rowSelection,
+      <Form
+        name="basic"
+        labelCol={{
+          span: 1,
         }}
-        columns={columns}
-        dataSource={data}
-        size={"small"}
-        pagination={{
-          position: ["bottomCenter"],
+        wrapperCol={{
+          span: 10,
         }}
-      />
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="제목"
+          name="title"
+          rules={[
+            {
+              required: true,
+              message: "제목을 입력해주세요.",
+            },
+          ]}
+        >
+          <Input placeholder="제목을 입력해주세요." />
+        </Form.Item>
+        <Form.Item
+          label="내용"
+          name="content"
+          rules={[
+            {
+              required: true,
+              message: "내용을 입력해주세요.",
+            },
+          ]}
+        >
+          <TextArea rows={20} placeholder="최대 2500자" maxLength={2500} />
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 0,
+            span: 16,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            글작성
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };

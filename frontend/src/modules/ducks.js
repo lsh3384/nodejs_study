@@ -19,7 +19,7 @@ const initialState = {
     id: "",
     name: "",
   },
-  page: ''
+  page: 'postList'
 };
 
 // reducer

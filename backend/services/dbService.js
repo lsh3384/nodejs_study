@@ -1,5 +1,5 @@
 const UserDao = require('../models/dao/userDao');
-const CompanyDao = require('../models/dao/companyDao');
+const PostDao = require('../models/dao/postDao');
 
 const DbHander = require('../helpers/dbHandler');
 
@@ -20,7 +20,7 @@ class DbService {
   _init() {
     if(!this.initialized) {
       this.models['user'] = UserDao;
-      this.models['company'] = CompanyDao;
+      this.models['post'] = PostDao;
 
       this.initialized = true;
     }

@@ -12,6 +12,7 @@ class PostController {
   }
 
   static createPost(req, res) {
+    console.log(req.body);
     const postService = DbServiceManager.getPostServiceInstance();
     postService.createPost(req.body).then((result)=> {
       res.json(result);

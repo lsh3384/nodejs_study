@@ -22,8 +22,7 @@ function Login() {
     
     if (result.data.status === "login_success") {
       dispatch(changeLogin({...result.data}));
-      dispatch(changePage('main'));
-
+      dispatch(changePage('postList'));
     }
     // console.log(store.getState().status);
     // console.log(store.getState());
