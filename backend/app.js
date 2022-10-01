@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+
 const MySQLStore = require("express-mysql-session")(session);
 const cors = require('cors');
 const path = require("path");
@@ -10,6 +11,14 @@ const AuthMiddleware = require("./middlewares/authMiddleware");
 
 
 const app = express(); // 클라이언트와 통신
+
+
+let corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+}
+app.use(cors(corsOptions));
+
 
 let express_mysql_seesion_options = {
   host: Config.dbHost,
@@ -33,15 +42,6 @@ app.use(
   })
 );
 
-let corsOptions = {
-  origin: "*",
-  Credential: true,
-}
-app.use(cors(corsOptions));
-
-
-app.use(AuthMiddleware.initialize());
-app.use(AuthMiddleware.session());
 
 var flash = require('connect-flash');
 app.use(flash())
@@ -50,6 +50,10 @@ app.use(express.static(path.join(__dirname, "/static")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(AuthMiddleware.initialize());
+app.use(AuthMiddleware.session());
+
 
 app.use(require("./routes/indexRoutes"));
 

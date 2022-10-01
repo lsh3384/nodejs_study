@@ -12,6 +12,9 @@ import { UserOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
 import axios from "axios";
+
+import { useNavigate } from "react-router";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -57,6 +60,7 @@ function Main() {
   const current = useSelector((state) => state.page);
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 
   const onClick = (e) => {
@@ -102,12 +106,24 @@ function Main() {
                   style={{
                     marginLeft: "10px",
                   }}
-                  onClick={() => {
-                    dispatch(changePage("login"));
+                  onClick={async () => {
                     dispatch(
-                      changeLogin({ status: "false", id: "", name: "" })
+                      changeLogin({
+                        status: "false",
+                        id: "",
+                        name: "",
+                      })
                     );
+
+                    let result = await axios.get(
+                      "http://localhost:3030/user/logout"
+                    );
+                    console.log(result.data);
+                    if (result.data.status === "logout_success") {
+                      navigate("/")
+                    }
                   }}
+
                 >
                   로그아웃
                 </Button>

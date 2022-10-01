@@ -5,7 +5,7 @@ class UserController {
   static getAllUsers(req, res) {
     const userService = DbServiceManager.getUserServiceInstance();
     userService.findAllUsers().then((result) => {
-      console.log(result);
+      // console.log(result);
       res.json(result.map(user => {
         delete user.dataValues.password;
         return user.dataValues;
@@ -14,8 +14,8 @@ class UserController {
   }
 
   static insertUser(req, res) {
-    console.log('/insertUser');
-    console.log(req.body);
+    // console.log('/insertUser');
+    // console.log(req.body);
     const userService = DbServiceManager.getUserServiceInstance();
     userService.insertUser(req.body).then((result) => {
       console.log('insertion completed!');
@@ -24,7 +24,7 @@ class UserController {
 
   static loginAction = (req, res, next) => {
     Passport.authenticate("local-login", async function (err, user, info) {
-      console.log("req.user: " + JSON.stringify(user));
+      // console.log("req.user: " + JSON.stringify(user));
       let json = JSON.parse(JSON.stringify(user));
 
       if (!user) {
@@ -34,10 +34,10 @@ class UserController {
         });
       } else {
         // req.user = user;
-        console.log(user);
+        // console.log(user);
         const userService = DbServiceManager.getUserServiceInstance();
         let result = await userService.findUserById(user.id);
-        console.log(result);
+        // console.log(result);
         res.send({status: "login_success", ...result.dataValues})
 
         return next();
@@ -45,8 +45,12 @@ class UserController {
     })(req, res, next);
   }
 
-  static getUserInfoById(req, res) {
-    
+  static logout = (req, res) => {
+    console.log('logout!!!!!!!!!!!!!!!!!!')
+    req.session.destroy();
+    console.log(req.sessionID);
+    res.clearCookie("session_id");
+    res.send({status: "logout_success"});
   }
 }
 

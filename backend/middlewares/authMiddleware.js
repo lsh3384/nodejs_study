@@ -7,6 +7,7 @@ const DbServiceManager = require('../services/dbServiceManager');
 // 처음 로그인할 때만 실행하여 sessionID 저장
 passport.serializeUser(async function(user, done) {
   console.log('serializeUser!');
+  console.log(user)
   done(null, user.id);
 });
 
@@ -27,18 +28,23 @@ passport.use('local-login',
       passReqToCallback : true,
       session: true
     },
-    async function(req, username, password, done) {
+    async function(req, id, pw, done) {
       console.log("------------------------------")
       console.log(req.body.id)
-      let id = req.body.id;
-      let pw = req.body.pw;
+      let _id = req.body.id;
+      let _pw = req.body.pw;
 
       const userService = DbServiceManager.getUserServiceInstance();
-      let validate_result = userService.validatePassword(pw, id).then((result) => result )
+      let validate_result = userService.validatePassword(_pw, _id).then((result) => result )
       
       if(validate_result) {
+
+        // req.logIn(_id, () => {});
+        req.logIn('???', () => {});
+        // req.logIn();
+        console.log('validate result')
         return done(null, {
-          id: id
+          id: _id
         });
       } else {
         return done(null, false, { message: 'Incorrect Password'} ); 

@@ -1,4 +1,8 @@
 import {configureStore} from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import thunk from 'redux-thunk';
+import storage from 'redux-persist/lib/storage';
+
 
 // 액션 타입
 const LOGIN = "LOGIN";
@@ -42,9 +46,18 @@ function login_reducer(state = initialState, action) {
     }
 }
 
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, login_reducer)
+
 // store
 const store = configureStore({
-    reducer: login_reducer,
+    reducer: persistedReducer,
+    devTools: process.env.NODE_ENV !== 'production',
+    middleware: [thunk],
 });
 
 export default store;
