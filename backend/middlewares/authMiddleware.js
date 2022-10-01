@@ -40,7 +40,7 @@ passport.use('local-login',
       if(validate_result) {
 
         // req.logIn(_id, () => {});
-        req.logIn('???', () => {});
+        req.logIn(_id, () => {});
         // req.logIn();
         console.log('validate result')
         return done(null, {

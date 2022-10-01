@@ -116,7 +116,9 @@ function Main() {
                     );
 
                     let result = await axios.get(
-                      "http://localhost:3030/user/logout"
+                      "http://localhost:3030/user/logout", { 
+                        withCredentials: true // 쿠키 cors 통신 설정
+                      }
                     );
                     console.log(result.data);
                     if (result.data.status === "logout_success") {
