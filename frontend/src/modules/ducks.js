@@ -7,10 +7,13 @@ import storage from 'redux-persist/lib/storage';
 // 액션 타입
 const LOGIN = "LOGIN";
 const PAGE = "PAGE";
+const POSTID = "POSTID";
 
 // 액션 함수
 export const changeLogin = (info) => ( {type: LOGIN, ...info})
 export const changePage = (page) => ( {type: PAGE, page})
+export const changePostId = (postId) => ( {type: POSTID, postId})
+
 
 // 초기 상태
 const initialState = {
@@ -19,7 +22,8 @@ const initialState = {
     id: "",
     name: "",
   },
-  page: 'postList'
+  page: 'postList',
+  postId: '',
 };
 
 // reducer
@@ -41,6 +45,12 @@ function login_reducer(state = initialState, action) {
                 ...state,
                 page: action.page,
             }
+        case POSTID:
+          console.log(action.type)
+          return {
+              ...state,
+              postId: action.postId,
+          }
         default:
             return state;
     }

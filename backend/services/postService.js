@@ -14,6 +14,14 @@ class PostService extends DbService {
     });
   }
 
+  findPostById({id}) {
+    return this.dao.findOne({
+      where: {
+        id: id,
+      },
+    });
+  }
+
   createPost({title, content, writer}) {
     return this.dao.create({
       title, content, writer,

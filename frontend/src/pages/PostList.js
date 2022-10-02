@@ -1,9 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
-import { changePage } from "../modules/ducks";
+import { changePage, changePostId } from "../modules/ducks";
 
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import { Avatar, Button, List, Space } from 'antd';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+import axios from 'axios';
 
 const data = Array.from({
   length: 23,
@@ -25,12 +27,38 @@ const IconText = ({ icon, text }) => (
 );
 
 const App = () => {
+  const [postListData, setPostListData] = useState([])
 
   const userInfo = useSelector((state) => state.userInfo);
+  const currentPage = useSelector((state) => state.page);
+
   const dispatch = useDispatch();
   
   const onBtnClick = () => {
-    dispatch(changePage('post'));
+    dispatch(changePage("post"));
+  };
+
+  // 마운트 될 때 처리
+  useEffect(() => {
+    let getPostListData = async () => {
+      let result = await axios.get("http://localhost:3030/post/getAllPosts");
+      console.log(result.data);
+      setPostListData(result.data.map((data, i)=> {
+        return ({
+          ...data,
+          description: '작성자: ' + data.writer,
+          href: `post/postId/${data.id}`,
+        })
+      }));
+    };
+    getPostListData();
+    
+    
+  }, []);
+  const moveToPage = (id) => {
+    dispatch(changePage('postView'));
+    dispatch(changePostId(id));
+    console.log('page move to '+ id);
   }
   return (
     <>
@@ -46,7 +74,7 @@ const App = () => {
           },
           pageSize: 3,
         }}
-        dataSource={data}
+        dataSource={postListData}
         footer={
           <div>
             <b>ant design</b> footer part
@@ -70,7 +98,7 @@ const App = () => {
           >
             <List.Item.Meta
               // avatar={<Avatar src={item.avatar} />}
-              title={<a href={item.href}>{item.title}</a>}
+              title={<a onClick={(e)=> {e.preventDefault();moveToPage(item.id)}} href={item.href}>{item.title}</a>}
               description={item.description}
             />
             {item.content}

@@ -26,6 +26,23 @@ class PostController {
     })
   }
 
+  static getPostById(req, res) {
+    if (req.query.id) {
+      console.log(req.query);
+      const postService = DbServiceManager.getPostServiceInstance();
+      postService.findPostById(req.query).then((result) => {
+        res.json(result);
+      });
+    } else {
+      res.json({message: 'no id'})
+    }
+  }
+
+  static createThumbnail(req, res) {
+    console.log(req.file);
+    res.send(req.file);
+  }
+
   static test(req, res) {
     console.log(req.body);
     console.log(req.body.jobs);
