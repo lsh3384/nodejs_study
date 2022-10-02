@@ -1,85 +1,85 @@
-import React, {useState} from "react";
-
-
 import { useSelector, useDispatch } from "react-redux";
 import { changePage } from "../modules/ducks";
-import { Button, Form, Input, Table } from "antd";
-import axios from "axios";
 
+import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
+import { Avatar, Button, List, Space } from 'antd';
+import React from 'react';
 
-function test(e) {
-  console.log(e);
-}
+const data = Array.from({
+  length: 23,
+}).map((_, i) => ({
+  href: 'https://ant.design',
+  title: `ant design part ${i}`,
+  avatar: 'https://joeschmoe.io/api/v1/random',
+  description:
+    'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+  content:
+    'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+}));
 
-const columns = [
-  {
-    title: "id",
-    dataIndex: "id",
-  },
-  {
-    title: "title",
-    dataIndex: "title",
-    render: (text) => <a onClick={test}>{text}</a>,
-  },
-  {
-    title: "writer",
-    dataIndex: "writer",
-  },
-];
-const data = [
-  {
-    key: "1",
-    id: "1",
-    title: "hello",
-    writer: "mr.Lee",
-  },
-];
+const IconText = ({ icon, text }) => (
+  <Space>
+    {React.createElement(icon)}
+    {text}
+  </Space>
+);
 
-const PostList = () => {
+const App = () => {
 
-  const currentPage = useSelector((state) => state.page);
   const userInfo = useSelector((state) => state.userInfo);
-
   const dispatch = useDispatch();
-  const [selectionType, setSelectionType] = useState("checkbox");
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === "Disabled User",
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
-
+  
   const onBtnClick = () => {
     dispatch(changePage('post'));
   }
-
   return (
     <>
-      <Table
-        rowSelection={{
-          type: selectionType,
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={data}
-        size={"small"}
-        pagination={{
-          position: ["bottomCenter"],
-        }}
-      />
       {userInfo.status === "login_success" && (
         <Button onClick={onBtnClick}>글쓰기</Button>
       )}
+      <List
+        itemLayout="vertical"
+        size="large"
+        pagination={{
+          onChange: (page) => {
+            console.log(page);
+          },
+          pageSize: 3,
+        }}
+        dataSource={data}
+        footer={
+          <div>
+            <b>ant design</b> footer part
+          </div>
+        }
+        renderItem={(item) => (
+          <List.Item
+            key={item.title}
+            actions={[
+              // <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
+              // <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+              // <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+            ]}
+            extra={
+              <img
+                width={272}
+                alt="logo"
+                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+              />
+            }
+          >
+            <List.Item.Meta
+              // avatar={<Avatar src={item.avatar} />}
+              title={<a href={item.href}>{item.title}</a>}
+              description={item.description}
+            />
+            {item.content}
+          </List.Item>
+        )}
+      />
     </>
-  );
+
+  )
 };
 
-export default PostList;
+export default App;
