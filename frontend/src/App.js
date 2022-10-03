@@ -11,6 +11,7 @@ import PostUpdate from './pages/PostUpdate';
 import PostList_test from './pages/PostList';
 import PostList from './pages/PostList';
 import Test from './pages/Test';
+import Success from './pages/Success';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/postView" element={<PostView/>} />
       <Route path="/postUpdate" element={<PostUpdate/>} />
       <Route path="/postList" element={<PostList/>} />
+      <Route path="/success" element={<Success/>}/>
       {/* <Route path="/PostList_test" element={<PostList_test/>} /> */}
       <Route path="/test" element={<Test/>} />
     </Routes>

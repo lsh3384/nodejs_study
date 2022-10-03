@@ -4,6 +4,7 @@ import Post from "./Post";
 import PostView from "./PostView";
 import PostUpdate from "./PostUpdate";
 import PostList from "./PostList";
+import Success from "./Success";
 
 // import { Link } from "react-router-dom";
 import { Button, Menu, Layout } from "antd";
@@ -41,6 +42,7 @@ function Component(props) {
           postView: <PostView />,
           postUpdate: <PostUpdate />,
           postList: <PostList />,
+          success: <Success />,
         }[props.state]
       }
     </>
