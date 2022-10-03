@@ -46,7 +46,7 @@ app.use(
 var flash = require('connect-flash');
 app.use(flash())
 
-app.use(express.static(path.join(__dirname, "/static")));
+app.use('/static', express.static(path.join(__dirname, "/static")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

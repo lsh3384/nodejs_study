@@ -3,19 +3,110 @@ import React, { useState } from "react";
 import {useSelector, useDispatch} from 'react-redux';
 import store, { changeLogin, changePage } from "../modules/ducks";
 
-import { Button, Form, Input, Upload } from "antd";
-import { UploadOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Upload, Modal, message } from "antd";
+import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from "axios";
 const { TextArea } = Input;
 
+
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => resolve(reader.result);
+
+    reader.onerror = (error) => reject(error);
+  });
 
 const Post = () => {
   const userInfo = useSelector(state => state.userInfo)
   const currentPage = useSelector((state) => state.page);
   const dispatch = useDispatch();
 
+  const [thumbnailPath, setThumbnailPath] = useState('null');
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [fileList, setFileList] = useState([
+    // {
+    //   uid: '-1',
+    //   name: 'image.png',
+    //   status: 'done',
+    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    // },
+    // {
+    //   uid: '-2',
+    //   name: 'image.png',
+    //   status: 'done',
+    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    // },
+    // {
+    //   uid: '-3',
+    //   name: 'image.png',
+    //   status: 'done',
+    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    // },
+    // {
+    //   uid: '-4',
+    //   name: 'image.png',
+    //   status: 'done',
+    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    // },
+    // {
+    //   uid: '-xxx',
+    //   percent: 50,
+    //   name: 'image.png',
+    //   status: 'uploading',
+    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    // },
+    // {
+    //   uid: '-5',
+    //   name: 'image.png',
+    //   status: 'error',
+    // },
+  ]);
+
+  
+  const handleCancel = () => setPreviewOpen(false);
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+  };
+
+  const handleChange = (info) => {
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+      console.log(info.file.response);
+      setThumbnailPath(info.file.response.path);
+    }
+    
+    
+    // console.log(newFileList)
+    setFileList(info.fileList);
+    // console.log(event);
+  }
+
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div
+        style={{
+          marginTop: 8,
+        }}
+      >
+        Upload
+      </div>
+    </div>
+  );
+
   const onFinish = (values) => {
-    let post = {...values, writer: userInfo.id,}
+    let post = {...values, writer: userInfo.id, thumbnail: thumbnailPath};
     axios.post("http://localhost:3030/post/createPost", { ...post });
     console.log("Success:", post);
     dispatch(changePage('postList'));
@@ -83,30 +174,58 @@ const Post = () => {
           <TextArea rows={20} placeholder="최대 2500자" maxLength={2500} />
         </Form.Item>
 
-
         <Form.Item
-            name="upload"
-            label="Upload"
-            type="image"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            extra="의뢰리스트 파일 업로드"
+          name="upload"
+          label="Upload"
+          type="image"
+          valuePropName="fileList"
+          getValueFromEvent={normFile}
+          extra="의뢰리스트 파일 업로드"
+        >
+          <Upload
+            name="thumbnail"
+            action="http://localhost:3030/post/createThumbnail"
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+            maxCount={1}
           >
-            <Upload name="thumbnail" action="http://localhost:3030/post/createThumbnail" listType="picture">
-              <Button icon={<UploadOutlined />}>클릭해서 첨부하기</Button>
-            </Upload>
-          </Form.Item>
+            {fileList.length >= 2 ? null : uploadButton}
+          </Upload>
+          <Modal
+            open={previewOpen}
+            title={previewTitle}
+            footer={null}
+            onCancel={handleCancel}
+          >
+            <img
+              alt="example"
+              style={{
+                width: "100%",
+              }}
+              src={previewImage}
+            />
+          </Modal>
+          {/* <Upload
+            name="thumbnail"
+            action="http://localhost:3030/post/createThumbnail"
+            listType="picture"
+          >
+            <Button icon={<UploadOutlined />}>클릭해서 첨부하기</Button>
+          </Upload> */}
+        </Form.Item>
 
-          <Form.Item
-            wrapperCol={{
-              offset: 0,
-              span: 24,
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              업로드
-            </Button>
-          </Form.Item>
+        {/* <Form.Item
+          wrapperCol={{
+            offset: 0,
+            span: 24,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            업로드
+          </Button>
+        </Form.Item> */}
 
         <Form.Item
           wrapperCol={{

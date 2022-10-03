@@ -72,12 +72,12 @@ const App = () => {
           onChange: (page) => {
             console.log(page);
           },
-          pageSize: 3,
+          pageSize: 5,
         }}
         dataSource={postListData}
         footer={
           <div>
-            <b>ant design</b> footer part
+            {/* <b>ant design</b> footer part */}
           </div>
         }
         renderItem={(item) => (
@@ -89,11 +89,17 @@ const App = () => {
               // <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
             ]}
             extra={
-              <img
+              <>
+              {(item.thumbnail) && 
+                <img
                 width={272}
                 alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                src={(item.thumbnail) ? "http://localhost:3030/" + item.thumbnail : null}
               />
+              }
+              
+              </>
+              
             }
           >
             <List.Item.Meta

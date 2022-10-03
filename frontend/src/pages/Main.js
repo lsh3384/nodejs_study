@@ -98,41 +98,49 @@ function Main() {
           <Header
             className="site-layout-background"
             style={{
+              display: "inline-block",
               padding: 0,
             }}
           >
             {userInfo.id ? (
               <>
-                <>{userInfo.id}님</>
-                <Button
-                  type="primary"
-                  size="small"
-                  style={{
-                    marginLeft: "10px",
-                  }}
-                  onClick={async () => {
-                    dispatch(
-                      changeLogin({
-                        status: "false",
-                        id: "",
-                        name: "",
-                      })
-                    );
+                <div style={{
+                      marginLeft: "10px",
+                      float: "right",
+                    }}>
+                  <>{userInfo.id}님</>
+                  <Button
+                    type="primary"
+                    size="small"
+                    style={{
+                      marginLeft: "10px",
+                      marginRight: "30px",
+                      // float: "right",
+                    }}
+                    onClick={async () => {
+                      dispatch(
+                        changeLogin({
+                          status: "false",
+                          id: "",
+                          name: "",
+                        })
+                      );
 
-                    let result = await axios.get(
-                      "http://localhost:3030/user/logout", { 
-                        withCredentials: true // 쿠키 cors 통신 설정
+                      let result = await axios.get(
+                        "http://localhost:3030/user/logout",
+                        {
+                          withCredentials: true, // 쿠키 cors 통신 설정
+                        }
+                      );
+                      console.log(result.data);
+                      if (result.data.status === "logout_success") {
+                        navigate("/");
                       }
-                    );
-                    console.log(result.data);
-                    if (result.data.status === "logout_success") {
-                      navigate("/")
-                    }
-                  }}
-
-                >
-                  로그아웃
-                </Button>
+                    }}
+                  >
+                    로그아웃
+                  </Button>
+                </div>
               </>
             ) : (
               <>
@@ -184,7 +192,6 @@ function Main() {
           </Footer>
         </Layout>
       </Layout>
-
     </>
   );
 }

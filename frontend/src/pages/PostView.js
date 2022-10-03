@@ -6,6 +6,7 @@ import { changePage } from "../modules/ducks";
 import { Button, Form, Input, Table, Divider } from "antd";
 import axios from "axios";
 
+import moment from "moment";
 
 const PostView = () => {
   const postId = useSelector((state)=> state.postId);
@@ -26,8 +27,11 @@ const PostView = () => {
   return (
     <>
       <h2>{postData.title}</h2>
-      {postData.writer} | {postData.createdAt.slice(0, 10)}
+      {/* {postData.writer} | {postData.createdAt.slice(0, 10)}  */}
+      {postData.writer} | {moment(postData.createdAt).format('YYYY-MM-DD HH:mm:ss')} 
       <Divider/>
+      {(postData.thumbnail) && <img src={"http://localhost:3030/" + postData.thumbnail}></img>}
+      <br/>
       {postData.content}
     </>
   );

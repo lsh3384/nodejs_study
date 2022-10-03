@@ -22,9 +22,9 @@ class PostService extends DbService {
     });
   }
 
-  createPost({title, content, writer}) {
+  createPost({title, content, writer, thumbnail}) {
     return this.dao.create({
-      title, content, writer,
+      title, content, writer, thumbnail
     })
   }
 
