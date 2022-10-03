@@ -19,9 +19,17 @@ class PostController {
     })
   }
 
-  static deletePosts(req, res) {
+  static updatePost(req, res){
+    console.log(req.body);
     const postService = DbServiceManager.getPostServiceInstance();
-    postService.deletePosts(req.body).then((result)=> {
+    postService.updatePost(req.body).then((result)=> {
+      res.json(result);
+    })
+  }
+
+  static deletePost(req, res) {
+    const postService = DbServiceManager.getPostServiceInstance();
+    postService.deletePost(req.query).then((result)=> {
       res.json(result);
     })
   }

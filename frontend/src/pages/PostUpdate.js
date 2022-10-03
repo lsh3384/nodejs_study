@@ -19,16 +19,22 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const Post = () => {
-  const userInfo = useSelector(state => state.userInfo)
+const PostUpdate = () => {
+  const userInfo = useSelector(state => state.userInfo);
+  const postInfo = useSelector(state => state.postInfo);
   const currentPage = useSelector((state) => state.page);
   const dispatch = useDispatch();
 
-  const [thumbnailPath, setThumbnailPath] = useState('null');
+  const [thumbnailPath, setThumbnailPath] = useState(postInfo.thumbnail);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState([]);
+  const [fileList, setFileList] = useState([{
+    uid: '-1',
+    name: 'image.png',
+    status: 'done',
+    url: 'http://localhost:3030/'+ postInfo.thumbnail,
+  }]);
 
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
@@ -68,8 +74,8 @@ const Post = () => {
   );
 
   const onFinish = (values) => {
-    let post = {...values, writer: userInfo.id, thumbnail: thumbnailPath};
-    axios.post("http://localhost:3030/post/createPost", { ...post });
+    let post = {...values, writer: userInfo.id, thumbnail: thumbnailPath, id: postInfo.id};
+    axios.post("http://localhost:3030/post/updatePost", { ...post });
     console.log("Success:", post);
     dispatch(changePage('postList'));
 
@@ -104,12 +110,22 @@ const Post = () => {
         wrapperCol={{
           span: 10,
         }}
-        initialValues={{
-          remember: true,
-        }}
+        // initialValues={{
+        //   remember: true,
+        // }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        fields={[
+          {
+            name: ["title"],
+            value: postInfo.title,
+          },
+          {
+            name: ["content"],
+            value: postInfo.content,
+          },
+        ]}
       >
         <Form.Item
           label="제목"
@@ -121,7 +137,8 @@ const Post = () => {
             },
           ]}
         >
-          <Input placeholder="제목을 입력해주세요." />
+          <Input placeholder="제목을 입력해주세요."/>
+          {/* <input value={postInfo.title}></input> */}
         </Form.Item>
         <Form.Item
           label="내용"
@@ -133,16 +150,16 @@ const Post = () => {
             },
           ]}
         >
-          <TextArea rows={20} placeholder="최대 2500자" maxLength={2500} />
+          <TextArea rows={20} placeholder="최대 2500자" maxLength={2500} value={postInfo.content} />
         </Form.Item>
 
         <Form.Item
-          name="upload"
+          // name="upload"
           label="Upload"
           type="image"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          extra="의뢰리스트 파일 업로드"
+          extra="thumbnail upload"
         >
           <Upload
             name="thumbnail"
@@ -195,8 +212,8 @@ const Post = () => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
-            글작성
+          <Button type="primary" htmlType="submit" danger>
+            수정완료
           </Button>
         </Form.Item>
       </Form>
@@ -204,4 +221,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default PostUpdate;

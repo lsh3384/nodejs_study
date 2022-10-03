@@ -2,6 +2,7 @@ import Login from "./Login";
 import Regist from "./Regist";
 import Post from "./Post";
 import PostView from "./PostView";
+import PostUpdate from "./PostUpdate";
 import PostList from "./PostList";
 
 // import { Link } from "react-router-dom";
@@ -38,6 +39,7 @@ function Component(props) {
           regist: <Regist />,
           post: <Post />,
           postView: <PostView />,
+          postUpdate: <PostUpdate />,
           postList: <PostList />,
         }[props.state]
       }

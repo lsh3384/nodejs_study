@@ -8,12 +8,13 @@ import storage from 'redux-persist/lib/storage';
 const LOGIN = "LOGIN";
 const PAGE = "PAGE";
 const POSTID = "POSTID";
+const MODE = "MODE";
 
 // 액션 함수
 export const changeLogin = (info) => ( {type: LOGIN, ...info})
 export const changePage = (page) => ( {type: PAGE, page})
-export const changePostId = (postId) => ( {type: POSTID, postId})
-
+export const changePostInfo = (postInfo) => ( {type: POSTID, ...postInfo})
+// export const changeMode = (mode) => ( {type: MODE, mode})
 
 // 초기 상태
 const initialState = {
@@ -22,38 +23,55 @@ const initialState = {
     id: "",
     name: "",
   },
-  page: 'postList',
-  postId: '',
+  page: "postList",
+  postInfo: {
+    id: "",
+    title: "",
+    content: "",
+    thumbnail: "",
+  },
+  // mode: '',
 };
 
 // reducer
 function login_reducer(state = initialState, action) {
-    console.log('reducer!!')
-    switch (action.type) {
-        case LOGIN:
-            return {
-              ...state,
-              userInfo: {
-                status: action.status,
-                id: action.id,
-                name: action.name,
-              },
-            };
-        case PAGE:
-            console.log(action.type)
-            return {
-                ...state,
-                page: action.page,
-            }
-        case POSTID:
-          console.log(action.type)
-          return {
-              ...state,
-              postId: action.postId,
-          }
-        default:
-            return state;
-    }
+  console.log("reducer!!");
+  switch (action.type) {
+    case LOGIN:
+      return {
+        ...state,
+        userInfo: {
+          status: action.status,
+          id: action.id,
+          name: action.name,
+        },
+      };
+    case PAGE:
+      console.log(action.type);
+      return {
+        ...state,
+        page: action.page,
+      };
+    case POSTID:
+      console.log(action.type);
+      return {
+        ...state,
+        postInfo: {
+          id: action.id,
+          title: action.title,
+          content: action.content,
+          thumbnail: action.thumbnail,
+        }
+      };
+    // case MODE:
+    //   console.log(action.type);
+    //   return {
+    //     ...state,
+    //     mode: action.mode,
+    //   };
+    default:
+      return state;
+  }
 }
 
 const persistConfig = {

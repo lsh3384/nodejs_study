@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { changePage, changePostId } from "../modules/ducks";
+import { changePage, changePostInfo } from "../modules/ducks";
 
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import { Avatar, Button, List, Space } from 'antd';
@@ -46,6 +46,7 @@ const App = () => {
       setPostListData(result.data.map((data, i)=> {
         return ({
           ...data,
+          key: data.id,
           description: '작성자: ' + data.writer,
           href: `post/postId/${data.id}`,
         })
@@ -55,11 +56,14 @@ const App = () => {
     
     
   }, []);
+
+  // 페이지 이동 처리
   const moveToPage = (id) => {
     dispatch(changePage('postView'));
-    dispatch(changePostId(id));
+    dispatch(changePostInfo({id}));
     console.log('page move to '+ id);
   }
+
   return (
     <>
       {userInfo.status === "login_success" && (
@@ -82,7 +86,7 @@ const App = () => {
         }
         renderItem={(item) => (
           <List.Item
-            key={item.title}
+            key={item.id}
             actions={[
               // <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
               // <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,

@@ -24,6 +24,11 @@ const PostDao = DbHandler.getDbInstance().define('post', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  use_yn: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: "y",
+  }
 })
 
 module.exports = PostDao;

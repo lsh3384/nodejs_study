@@ -22,7 +22,8 @@ const upload = multer({ storage: storage });
 
 router.get("/getAllPosts", PostController.getAllPosts);
 router.get("/getPostById", PostController.getPostById);
+router.get("/deletePost", PostController.deletePost);
 router.post("/createPost", PostController.createPost);
+router.post("/updatePost", PostController.updatePost);
 router.post("/createThumbnail", upload.single('thumbnail'), PostController.createThumbnail);
-router.post("/deletePost", PostController.deletePosts);
 module.exports = router;
