@@ -24,7 +24,7 @@ const Post = () => {
   const currentPage = useSelector((state) => state.page);
   const dispatch = useDispatch();
 
-  const [thumbnailPath, setThumbnailPath] = useState('null');
+  const [thumbnailPath, setThumbnailPath] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
