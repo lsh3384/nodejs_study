@@ -13,15 +13,13 @@ const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-
     reader.onload = () => resolve(reader.result);
-
     reader.onerror = (error) => reject(error);
   });
 
+
 const Post = () => {
   const userInfo = useSelector(state => state.userInfo)
-  const currentPage = useSelector((state) => state.page);
   const dispatch = useDispatch();
 
   const [thumbnailPath, setThumbnailPath] = useState('');
@@ -48,10 +46,7 @@ const Post = () => {
       setThumbnailPath(info.file.response.path);
     }
     
-    
-    // console.log(newFileList)
     setFileList(info.fileList);
-    // console.log(event);
   }
 
   const uploadButton = (
@@ -68,15 +63,14 @@ const Post = () => {
   );
 
   const onFinish = (values) => {
-    let post = {...values, writer: userInfo.id, thumbnail: thumbnailPath};
-    axios.post("http://localhost:3030/post/createPost", { ...post });
-    console.log("Success:", post);
-    dispatch(changePage('postList'));
-
-    // console.log(values.title);
-    // console.log(values.content);
-    // console.log(userInfo.id);
-    // console.log(userInfo.name);
+    async function createPost() {
+      let post = { ...values, writer: userInfo.id, thumbnail: thumbnailPath };
+      axios.post("http://localhost:3030/post/createPost", { ...post });
+      console.log("Success:", post);
+      dispatch(changePage("postList"));
+    }
+    
+    createPost();
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -169,25 +163,7 @@ const Post = () => {
               src={previewImage}
             />
           </Modal>
-          {/* <Upload
-            name="thumbnail"
-            action="http://localhost:3030/post/createThumbnail"
-            listType="picture"
-          >
-            <Button icon={<UploadOutlined />}>클릭해서 첨부하기</Button>
-          </Upload> */}
         </Form.Item>
-
-        {/* <Form.Item
-          wrapperCol={{
-            offset: 0,
-            span: 24,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            업로드
-          </Button>
-        </Form.Item> */}
 
         <Form.Item
           wrapperCol={{
