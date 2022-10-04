@@ -33,7 +33,7 @@ const App = () => {
   const currentPage = useSelector((state) => state.page);
 
   const dispatch = useDispatch();
-  
+
   const onBtnClick = () => {
     dispatch(changePage("post"));
   };
@@ -41,7 +41,9 @@ const App = () => {
   // 마운트 될 때 처리
   useEffect(() => {
     let getPostListData = async () => {
-      let result = await axios.get("http://localhost:3030/post/getAllPosts");
+      console.log("http://nodejs.leesh.kr/post/getAllPosts");
+      let result = await axios.get("http://nodejs.leesh.kr/post/getAllPosts");
+      // let result = await axios.get("http://localhost:3030/post/getAllPosts");
       console.log(result.data);
       setPostListData(result.data.map((data, i)=> {
         return ({
@@ -53,8 +55,8 @@ const App = () => {
       }));
     };
     getPostListData();
-    
-    
+
+
   }, []);
 
   // 페이지 이동 처리
@@ -94,16 +96,16 @@ const App = () => {
             ]}
             extra={
               <>
-              {(item.thumbnail) && 
+              {(item.thumbnail) &&
                 <img
                 width={272}
                 alt="logo"
                 src={(item.thumbnail) ? "http://localhost:3030/" + item.thumbnail : null}
               />
               }
-              
+
               </>
-              
+
             }
           >
             <List.Item.Meta
