@@ -141,7 +141,7 @@ function Main() {
                       );
                       console.log(result.data);
                       if (result.data.status === "logout_success") {
-                        navigate("/");
+                        dispatch(changePage("main"))
                       }
                     }}
                   >
