@@ -7,22 +7,18 @@ import PostList from "./PostList";
 import Success from "./Success";
 import config from "../config";
 
-// import { Link } from "react-router-dom";
 import { Button, Menu, Layout } from "antd";
+
 import { useSelector, useDispatch } from "react-redux";
 import { changeLogin, changePage } from "../modules/ducks";
 import "./Main.css";
-
 import { UserOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
 import axios from "axios";
-
 import { useNavigate } from "react-router";
 
 const { Header, Content, Footer, Sider } = Layout;
-
-
 
 function getItem(label, key, icon, children) {
   return {
@@ -53,17 +49,7 @@ function Component(props) {
 }
 
 const items = [
-  // getItem(<Link to="/login">로그인</Link>, "1", <PieChartOutlined />),
-  // getItem(<Link to="/regist">회원가입</Link>, "2", <DesktopOutlined />),
-  // getItem(<Link to="/company">회사등록</Link>, "3", <UserOutlined />),
-  // getItem("로그인", "login", <PieChartOutlined />),
-  // getItem("회원가입", "regist", <DesktopOutlined />),
-  getItem("게시글", "postList", <UserOutlined />),
-  // getItem("Team", "sub2", <TeamOutlined />, [
-  //   getItem("Team 1", "6"),
-  //   getItem("Team 2", "8"),
-  // ]),
-  // getItem("Files", "9", <FileOutlined />),
+  getItem("게시판", "postList", <UserOutlined />),
 ];
 
 function Main() {
@@ -109,12 +95,13 @@ function Main() {
               padding: 0,
             }}
           >
-            {userInfo.id ? (
-              <>
-                <div style={{
-                      marginLeft: "10px",
-                      float: "right",
-                    }}>
+            <div style={{
+              marginLeft: "10px",
+              marginRight: "20px",
+              float: "right",
+            }}>
+              {userInfo.id ? (
+                <>
                   <>{userInfo.id}님</>
                   <Button
                     type="primary"
@@ -122,7 +109,6 @@ function Main() {
                     style={{
                       marginLeft: "10px",
                       marginRight: "30px",
-                      // float: "right",
                     }}
                     onClick={async () => {
                       dispatch(
@@ -141,38 +127,40 @@ function Main() {
                       );
                       console.log(result.data);
                       if (result.data.status === "logout_success") {
-                        dispatch(changePage("main"))
+                        dispatch(changePage("postList"))
                       }
                     }}
                   >
                     로그아웃
                   </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Button
-                  type="primary"
-                  size="small"
-                  style={{
-                    marginLeft: "10px",
-                  }}
-                  onClick={() => dispatch(changePage("login"))}
-                >
-                  로그인
-                </Button>
-                <Button
-                  type="primary"
-                  size="small"
-                  style={{
-                    marginLeft: "10px",
-                  }}
-                  onClick={() => dispatch(changePage("regist"))}
-                >
-                  회원가입
-                </Button>
-              </>
-            )}
+
+                </>
+              ) : (
+                <>
+                  <Button
+                    type="primary"
+                    size="small"
+                    style={{
+                      marginLeft: "10px",
+                    }}
+                    onClick={() => dispatch(changePage("login"))}
+                  >
+                    로그인
+                  </Button>
+                  <Button
+                    type="primary"
+                    size="small"
+                    style={{
+                      marginLeft: "10px",
+                    }}
+                    onClick={() => dispatch(changePage("regist"))}
+                  >
+                    회원가입
+                  </Button>
+                </>
+              )}
+            </div>
+
           </Header>
 
           <Content

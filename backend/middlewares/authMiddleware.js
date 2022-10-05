@@ -1,4 +1,4 @@
-var passport = require('passport');
+const passport = require('passport');
 
 const DbServiceManager = require('../services/dbServiceManager');
 
@@ -8,7 +8,8 @@ const DbServiceManager = require('../services/dbServiceManager');
 passport.serializeUser(async function(user, done) {
   console.log('serializeUser!');
   console.log(user)
-  done(null, user.id);
+  // console.log(user.id)
+  done(null, user);
 });
 
 
@@ -35,8 +36,9 @@ passport.use('local-login',
       let _pw = req.body.pw;
 
       const userService = DbServiceManager.getUserServiceInstance();
-      let validate_result = userService.validatePassword(_pw, _id).then((result) => result )
-      
+      let validate_result = await userService.validatePassword(_pw, _id).then((result) => result )
+      console.log('validate result!!!!!!!!!!!!!!')
+      console.log(validate_result);
       if(validate_result) {
 
         // req.logIn(_id, () => {});
@@ -47,7 +49,7 @@ passport.use('local-login',
           id: _id
         });
       } else {
-        return done(null, false, { message: 'Incorrect Password'} ); 
+        return done(null, false, { message: 'Incorrect Password'} );
       }
     }
   )

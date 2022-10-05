@@ -24,7 +24,7 @@ class UserController {
 
   static loginAction = (req, res, next) => {
     Passport.authenticate("local-login", async function (err, user, info) {
-      // console.log("req.user: " + JSON.stringify(user));
+      console.log("req.user: " + JSON.stringify(user));
       let json = JSON.parse(JSON.stringify(user));
 
       if (!user) {
@@ -38,6 +38,7 @@ class UserController {
         const userService = DbServiceManager.getUserServiceInstance();
         let result = await userService.findUserById(user.id);
         // console.log(result);
+        // req.logIn(user, () => {});
         res.send({status: "login_success", ...result.dataValues})
 
         return next();
@@ -46,11 +47,16 @@ class UserController {
   }
 
   static logout = (req, res) => {
-    console.log('logout!!!!!!!!!!!!!!!!!!')
-    req.session.destroy();
-    console.log(req.sessionID);
-    res.clearCookie("session_id");
-    res.send({status: "logout_success"});
+
+
+    req.session.destroy(function (err){
+      res.clearCookie("session_id");
+      console.log(req.sessionID);
+      console.log('logout!!!!!!!!!!!!!!!!!!')
+      res.send({status: "logout_success"});
+    });
+    // req.session.destroy();
+
   }
 }
 

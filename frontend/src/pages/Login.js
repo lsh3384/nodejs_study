@@ -1,7 +1,7 @@
 import config from "../config";
 
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, Space } from "antd";
 import {useSelector, useDispatch} from 'react-redux';
 import store, { changeLogin, changePage } from "../modules/ducks";
 
@@ -26,8 +26,6 @@ function Login() {
       dispatch(changeLogin({...result.data}));
       dispatch(changePage('postList'));
     }
-    // console.log(store.getState().status);
-    // console.log(store.getState());
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -36,20 +34,12 @@ function Login() {
 
   return (
     <>
-      <Link to="/">
-        <Button type="primary">홈으로</Button>
-      </Link>
       <h1 style={{ textAlign: "center" }}>로그인 페이지</h1>
       <div style={{ textAlign: "center" }}>
-
-        <h1 style={{ textAlign: "center" }}>{userInfo.status}</h1>
-        { (userInfo.id) && <h1 style={{ textAlign: "center" }}>id: {userInfo.id}</h1> }
-        { (userInfo.name) && <h1 style={{ textAlign: "center" }}>name: {userInfo.name}</h1> }
-
         <Form
           name="basic"
           labelCol={{
-            span: 9,
+            span: 10,
           }}
           wrapperCol={{
             span: 4,
@@ -88,28 +78,20 @@ function Login() {
           </Form.Item>
 
           <Form.Item
-            name="remember"
-            valuePropName="checked"
             wrapperCol={{
               offset: 0,
-              span: 16,
+              span: 24,
             }}
           >
-            <Checkbox>아이디 저장</Checkbox>
-          </Form.Item>
+            <Space size="middle">
+              <Button type="primary" htmlType="submit">
+                로그인
+              </Button>
+              <Link to="/regist">
+                <Button type="primary">회원가입</Button>
+              </Link>
+            </Space>
 
-          <Form.Item
-            wrapperCol={{
-              offset: 0,
-              span: 16,
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              로그인
-            </Button>
-            <Link to="/regist">
-              <Button type="primary">회원가입</Button>
-            </Link>
           </Form.Item>
         </Form>
       </div>

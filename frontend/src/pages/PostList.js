@@ -44,7 +44,9 @@ const App = () => {
   useEffect(() => {
     let getPostListData = async () => {
       console.log(config.serverUrl + "/post/getAllPosts");
-      let result = await axios.get(config.serverUrl+"/post/getAllPosts");
+      let result = await axios.get(config.serverUrl+"/post/getAllPosts",                         {
+        withCredentials: true, // 쿠키 cors 통신 설정
+      });
       // let result = await axios.get("http://localhost:3030/post/getAllPosts");
       console.log(result.data);
       setPostListData(result.data.map((data, i)=> {

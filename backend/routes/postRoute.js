@@ -20,8 +20,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.get("/getAllPosts", PostController.getAllPosts);
-router.get("/getPostById", PostController.getPostById);
+router.get("/getAllPosts",
+  function (req, res, next) {
+    console.log(req.isAuthenticated());
+    console.log(req.user)
+    // console.log(req)
+    next() }, PostController.getAllPosts);
+router.get("/getPostById", function (req, res, next) { console.log(req.isAuthenticated()); next() }, PostController.getPostById);
 router.get("/deletePost", PostController.deletePost);
 router.post("/createPost", PostController.createPost);
 router.post("/updatePost", PostController.updatePost);
