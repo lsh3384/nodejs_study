@@ -1,3 +1,5 @@
+import config from "../config";
+
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input } from "antd";
 import {useSelector, useDispatch} from 'react-redux';
@@ -8,18 +10,18 @@ import axios from "axios";
 
 
 function Login() {
-  const history = useNavigate();  
-  
+  const history = useNavigate();
+
   const userInfo = useSelector(state => state.userInfo)
   const dispatch = useDispatch();
 
   const onFinish = async (values) => {
-    console.log("Success:", values);  
-    let result = await axios.post('http://localhost:3030/user/login_action', {...values}, { 
+    console.log("Success:", values);
+    let result = await axios.post(config.serverUrl + '/user/login_action', {...values}, {
       withCredentials: true // 쿠키 cors 통신 설정
     })
     console.log('!!!!', result.data);
-    
+
     if (result.data.status === "login_success") {
       dispatch(changeLogin({...result.data}));
       dispatch(changePage('postList'));
@@ -39,11 +41,11 @@ function Login() {
       </Link>
       <h1 style={{ textAlign: "center" }}>로그인 페이지</h1>
       <div style={{ textAlign: "center" }}>
-        
+
         <h1 style={{ textAlign: "center" }}>{userInfo.status}</h1>
         { (userInfo.id) && <h1 style={{ textAlign: "center" }}>id: {userInfo.id}</h1> }
         { (userInfo.name) && <h1 style={{ textAlign: "center" }}>name: {userInfo.name}</h1> }
-        
+
         <Form
           name="basic"
           labelCol={{

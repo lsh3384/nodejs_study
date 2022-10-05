@@ -6,12 +6,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { changePage, changePostInfo } from "../modules/ducks";
 
 import axios from "axios";
+import config from "../config";
 
 const Regist = () => {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = (values) => {
-    axios.post('http://localhost:3030/user/insertUser', {...values})
+    axios.post(config.serverUrl + '/user/insertUser', {...values})
     // navigate('/success');
     dispatch(changePage('success'));
     console.log("Success:", values);

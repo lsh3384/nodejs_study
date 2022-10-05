@@ -5,6 +5,7 @@ import PostView from "./PostView";
 import PostUpdate from "./PostUpdate";
 import PostList from "./PostList";
 import Success from "./Success";
+import config from "../config";
 
 // import { Link } from "react-router-dom";
 import { Button, Menu, Layout } from "antd";
@@ -20,6 +21,8 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 
 const { Header, Content, Footer, Sider } = Layout;
+
+
 
 function getItem(label, key, icon, children) {
   return {
@@ -131,7 +134,7 @@ function Main() {
                       );
 
                       let result = await axios.get(
-                        "http://localhost:3030/user/logout",
+                        config.serverUrl + "/user/logout",
                         {
                           withCredentials: true, // 쿠키 cors 통신 설정
                         }

@@ -6,6 +6,9 @@ import store, { changeLogin, changePage } from "../modules/ducks";
 import { Button, Form, Input, Upload, Modal, message } from "antd";
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from "axios";
+
+import config from '../config';
+
 const { TextArea } = Input;
 
 
@@ -33,7 +36,7 @@ const PostUpdate = () => {
     uid: '-1',
     name: 'image.png',
     status: 'done',
-    url: 'http://localhost:3030/'+ postInfo.thumbnail,
+    url: config.serverUrl + '/'+ postInfo.thumbnail,
   }]);
 
   const handleCancel = () => setPreviewOpen(false);
@@ -53,8 +56,8 @@ const PostUpdate = () => {
       console.log(info.file.response);
       setThumbnailPath(info.file.response.path);
     }
-    
-    
+
+
     // console.log(newFileList)
     setFileList(info.fileList);
     // console.log(event);
@@ -75,7 +78,7 @@ const PostUpdate = () => {
 
   const onFinish = (values) => {
     let post = {...values, writer: userInfo.id, thumbnail: thumbnailPath, id: postInfo.id};
-    axios.post("http://localhost:3030/post/updatePost", { ...post });
+    axios.post(config.serverUrl + "/post/updatePost", { ...post });
     console.log("Success:", post);
     dispatch(changePage('postList'));
 
@@ -89,14 +92,14 @@ const PostUpdate = () => {
     console.log("Failed:", errorInfo);
   };
 
-  
+
   const normFile = (e) => {
     console.log('Upload event:', e);
-  
+
     if (Array.isArray(e)) {
       return e;
     }
-  
+
     return e?.fileList;
   };
 

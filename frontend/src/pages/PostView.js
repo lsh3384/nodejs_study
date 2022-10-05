@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { changePage, changePostInfo } from "../modules/ducks";
 import { Button, Form, Input, Table, Divider } from "antd";
 import axios from "axios";
+import config from "../config";
 
 import moment from "moment";
 
@@ -16,7 +17,7 @@ const PostView = () => {
   // 마운트 될 때 처리
   useEffect(() => {
     const getPostData = async () => {
-      let result = await axios.get('http://localhost:3030/post/getPostById', {params: { id: postInfo.id}});
+      let result = await axios.get(config.serverUrl + '/post/getPostById', {params: { id: postInfo.id}});
       console.log(result);
       setPostData(result.data);
       dispatch(changePostInfo({...result.data}))
@@ -28,16 +29,18 @@ const PostView = () => {
     dispatch(changePage('postUpdate'));
   }
 
-  
+
   const onDeleteBtnClick = () => {
     const deletePost = async () => {
-      let result = await axios.get('http://localhost:3030/post/deletePost', {params: { id: postInfo.id}});
+      let result = await axios.get(config.serverUrl + '/post/deletePost', {params: { id: postInfo.id}});
       console.log(result);
       setPostData(result.data);
       dispatch(changePostInfo({...result.data}))
       dispatch(changePage('postList'));
     }
-    deletePost();
+    if (window.confirm('삭제하시겠습니까?')) {
+      deletePost();
+    }
   }
   return (
     <>
@@ -51,7 +54,7 @@ const PostView = () => {
             삭제
       </Button>
       <Divider/>
-      {(postData.thumbnail) && <img src={"http://localhost:3030/" + postData.thumbnail}></img>}
+      {(postData.thumbnail) && <img src={config.serverUrl + "/" + postData.thumbnail}></img>}
       <br/>
       {postData.content}
     </>

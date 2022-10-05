@@ -1,3 +1,5 @@
+import config from "../config";
+
 import React, { useState } from "react";
 
 import {useSelector, useDispatch} from 'react-redux';
@@ -7,6 +9,7 @@ import { Button, Form, Input, Upload, Modal, message } from "antd";
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 import axios from "axios";
 const { TextArea } = Input;
+
 
 
 const getBase64 = (file) =>
@@ -45,7 +48,7 @@ const Post = () => {
       console.log(info.file.response);
       setThumbnailPath(info.file.response.path);
     }
-    
+
     setFileList(info.fileList);
   }
 
@@ -65,11 +68,11 @@ const Post = () => {
   const onFinish = (values) => {
     async function createPost() {
       let post = { ...values, writer: userInfo.id, thumbnail: thumbnailPath };
-      axios.post("http://localhost:3030/post/createPost", { ...post });
+      axios.post(config.serverUrl + "/post/createPost", { ...post });
       console.log("Success:", post);
       dispatch(changePage("postList"));
     }
-    
+
     createPost();
   };
 
@@ -77,14 +80,14 @@ const Post = () => {
     console.log("Failed:", errorInfo);
   };
 
-  
+
   const normFile = (e) => {
     console.log('Upload event:', e);
-  
+
     if (Array.isArray(e)) {
       return e;
     }
-  
+
     return e?.fileList;
   };
 
@@ -140,7 +143,7 @@ const Post = () => {
         >
           <Upload
             name="thumbnail"
-            action="http://localhost:3030/post/createThumbnail"
+            action={config.serverUrl + "/post/createThumbnail"}
             listType="picture-card"
             fileList={fileList}
             onPreview={handlePreview}

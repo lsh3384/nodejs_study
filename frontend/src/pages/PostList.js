@@ -7,6 +7,8 @@ import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 
+import config from '../config';
+
 const data = Array.from({
   length: 23,
 }).map((_, i) => ({
@@ -41,8 +43,8 @@ const App = () => {
   // 마운트 될 때 처리
   useEffect(() => {
     let getPostListData = async () => {
-      console.log("http://nodejs.leesh.kr/post/getAllPosts");
-      let result = await axios.get("http://nodejs.leesh.kr/post/getAllPosts");
+      console.log(config.serverUrl + "/post/getAllPosts");
+      let result = await axios.get(config.serverUrl+"/post/getAllPosts");
       // let result = await axios.get("http://localhost:3030/post/getAllPosts");
       console.log(result.data);
       setPostListData(result.data.map((data, i)=> {
@@ -100,7 +102,7 @@ const App = () => {
                 <img
                 width={272}
                 alt="logo"
-                src={(item.thumbnail) ? "http://localhost:3030/" + item.thumbnail : null}
+                src={(item.thumbnail) ? config.serverUrl + "/" + item.thumbnail : null}
               />
               }
 
