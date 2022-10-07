@@ -18,6 +18,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
+axios.defaults.withCredentials = true; // withCredentials 전역 설정
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {

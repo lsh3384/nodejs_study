@@ -42,12 +42,14 @@ passport.use('local-login',
       if(validate_result) {
 
         // req.logIn(_id, () => {});
-        req.logIn(_id, () => {});
-        // req.logIn();
-        console.log('validate result')
-        return done(null, {
-          id: _id
+        req.logIn(_id, () => {
+          console.log('validate result')
+          return done(null, {
+            id: _id
+          });
         });
+        // req.logIn();
+
       } else {
         return done(null, false, { message: 'Incorrect Password'} );
       }

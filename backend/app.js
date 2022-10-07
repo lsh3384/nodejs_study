@@ -13,16 +13,13 @@ const AuthMiddleware = require("./middlewares/authMiddleware");
 
 const app = express(); // 클라이언트와 통신
 
-
+app.use(cookieParser());
 let corsOptions = {
-  // origin: "http://localhost:3000",
+  origin: "http://localhost:3000",
   credentials: true,
 }
 app.use(cors(corsOptions));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cookieParser('session_cookie_secret'));
 
 let express_mysql_seesion_options = {
   host: Config.dbHost,
@@ -42,8 +39,8 @@ app.use(
     secret: "session_cookie_secret",
     store: sessionStore, // 위에서 설정한 express-mysql-session으로 mysql에 저장하겠다는 것을 나타냄
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 24* 60 * 60 * 1000, secure:false }, //브라우저에서 쿠키의 expiration 시간을 정함.
+    saveUninitialized: false,
+    cookie: { maxAge: 24* 60 * 60 * 1000 }, //브라우저에서 쿠키의 expiration 시간을 정함.
   })
 );
 
@@ -52,7 +49,10 @@ var flash = require('connect-flash');
 app.use(flash())
 
 app.use('/static', express.static(path.join(__dirname, "/static")));
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+// app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 app.use(AuthMiddleware.initialize());

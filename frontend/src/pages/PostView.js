@@ -32,7 +32,9 @@ const PostView = () => {
 
   const onDeleteBtnClick = () => {
     const deletePost = async () => {
-      let result = await axios.get(config.serverUrl + '/post/deletePost', {params: { id: postInfo.id}});
+      let result = await axios.get(config.serverUrl + '/post/deletePost', {params: { id: postInfo.id}}, {
+        withCredentials: true, // 쿠키 cors 통신 설정
+      });
       console.log(result);
       setPostData(result.data);
       dispatch(changePostInfo({...result.data}))
