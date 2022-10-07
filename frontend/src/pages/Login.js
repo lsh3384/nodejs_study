@@ -3,7 +3,9 @@ import config from "../config";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, Space } from "antd";
 import {useSelector, useDispatch} from 'react-redux';
-import store, { changeLogin, changePage } from "../modules/ducks";
+
+import { changePage } from '../modules/page';
+import { changeUserInfo } from '../modules/userInfo';
 
 import axios from "axios";
 
@@ -12,7 +14,7 @@ import axios from "axios";
 function Login() {
   const history = useNavigate();
 
-  const userInfo = useSelector(state => state.userInfo)
+  // const userInfo = useSelector(state => state.userInfo)
   const dispatch = useDispatch();
 
   const onFinish = async (values) => {
@@ -23,7 +25,7 @@ function Login() {
     console.log('!!!!', result.data);
 
     if (result.data.status === "login_success") {
-      dispatch(changeLogin({...result.data}));
+      dispatch(changeUserInfo({...result.data}));
       dispatch(changePage('postList'));
     }
   };

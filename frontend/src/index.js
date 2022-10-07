@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import 'antd/dist/antd.min.css';
 
-import store from './modules/ducks';
+import store from './modules/index';
 import {Provider} from 'react-redux';
 
 import { PersistGate } from 'redux-persist/integration/react';

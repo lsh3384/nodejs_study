@@ -3,10 +3,12 @@ import config from "../config";
 import React, { useState } from "react";
 
 import {useSelector, useDispatch} from 'react-redux';
-import store, { changeLogin, changePage } from "../modules/ducks";
 
 import { Button, Form, Input, Upload, Modal, message } from "antd";
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
+
+import { changePage } from "../modules/page";
+
 import axios from "axios";
 const { TextArea } = Input;
 

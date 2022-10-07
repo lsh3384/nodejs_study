@@ -10,12 +10,13 @@ import config from "../config";
 import { Button, Menu, Layout } from "antd";
 
 import { useSelector, useDispatch } from "react-redux";
-import { changeLogin, changePage } from "../modules/ducks";
 import "./Main.css";
 import { UserOutlined } from "@ant-design/icons";
 
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import axios from "axios";
+import { changeUserInfo } from "../modules/userInfo";
+import { changePage } from "../modules/page";
 
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 const { Header, Content, Footer, Sider } = Layout;
@@ -63,6 +64,13 @@ function Main() {
     dispatch(changePage(e.key));
   };
 
+  // 마운트 될 때 처리
+  useEffect(() => {
+    console.log('!!!!!!!!!!!!!!!!',userInfo.status);
+    console.log('!!!!!!!!!!!!!!!!',currentPage.page);
+  }, [])
+
+
   return (
     <>
       <Layout
@@ -109,10 +117,11 @@ function Main() {
                     }}
                     onClick={async () => {
                       dispatch(
-                        changeLogin({
+                        changeUserInfo({
                           status: "false",
                           id: "",
                           name: "",
+                          auth: "",
                         })
                       );
 
@@ -172,7 +181,8 @@ function Main() {
                 minHeight: 360,
               }}
             >
-              <Component state={currentPage}></Component>
+              {/* {currentPage} */}
+              <Component state={currentPage.page}></Component>
             </div>
           </Content>
           <Footer
