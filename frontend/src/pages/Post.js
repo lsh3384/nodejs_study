@@ -68,7 +68,7 @@ const Post = () => {
   const onFinish = (values) => {
     async function createPost() {
       let post = { ...values, writer: userInfo.id, thumbnail: thumbnailPath };
-      axios.post(config.serverUrl + "/post/createPost", { ...post });
+      axios.post(process.env.REACT_APP_SERVER_URL + "/post/createPost", { ...post });
       console.log("Success:", post);
       dispatch(changePage("postList"));
     }
@@ -143,7 +143,7 @@ const Post = () => {
         >
           <Upload
             name="thumbnail"
-            action={config.serverUrl + "/post/createThumbnail"}
+            action={process.env.REACT_APP_SERVER_URL + "/post/createThumbnail"}
             listType="picture-card"
             fileList={fileList}
             onPreview={handlePreview}

@@ -36,7 +36,7 @@ const PostUpdate = () => {
     uid: '-1',
     name: 'image.png',
     status: 'done',
-    url: config.serverUrl + '/'+ postInfo.thumbnail,
+    url: process.env.REACT_APP_SERVER_URL + '/'+ postInfo.thumbnail,
   }]);
 
   const handleCancel = () => setPreviewOpen(false);
@@ -78,7 +78,7 @@ const PostUpdate = () => {
 
   const onFinish = (values) => {
     let post = {...values, writer: userInfo.id, thumbnail: thumbnailPath, id: postInfo.id};
-    axios.post(config.serverUrl + "/post/updatePost", { ...post });
+    axios.post(process.env.REACT_APP_SERVER_URL + "/post/updatePost", { ...post });
     console.log("Success:", post);
     dispatch(changePage('postList'));
 

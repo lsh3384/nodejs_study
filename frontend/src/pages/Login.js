@@ -17,7 +17,7 @@ function Login() {
 
   const onFinish = async (values) => {
     console.log("Success:", values);
-    let result = await axios.post(config.serverUrl + '/user/login_action', {...values}, {
+    let result = await axios.post(process.env.REACT_APP_SERVER_URL + '/user/login_action', {...values}, {
       withCredentials: true // 쿠키 cors 통신 설정
     })
     console.log('!!!!', result.data);

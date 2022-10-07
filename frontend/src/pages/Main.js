@@ -16,7 +16,6 @@ import { UserOutlined } from "@ant-design/icons";
 
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
 
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 const { Header, Content, Footer, Sider } = Layout;
@@ -58,11 +57,8 @@ function Main() {
   const currentPage = useSelector((state) => state.page);
   const userInfo = useSelector((state) => state.userInfo);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
 
   const onClick = (e) => {
-    console.log("click ", e);
     console.log("click ", e);
     dispatch(changePage(e.key));
   };
@@ -121,7 +117,7 @@ function Main() {
                       );
 
                       let result = await axios.get(
-                        config.serverUrl + "/user/logout",
+                        process.env.REACT_APP_SERVER_URL + "/user/logout",
                         {
                           withCredentials: true, // 쿠키 cors 통신 설정
                         }
