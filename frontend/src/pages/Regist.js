@@ -12,7 +12,8 @@ const Regist = () => {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = (values) => {
-    axios.post(process.env.REACT_APP_SERVER_URL + '/user/insertUser', {...values})
+    // axios.post(process.env.REACT_APP_SERVER_URL + '/user/insertUser', {...values})
+    axios.post('http://nodejs.leesh.kr' + '/user/insertUser', {...values})
     // navigate('/success');
     dispatch(changePage('success'));
     console.log("Success:", values);

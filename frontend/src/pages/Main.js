@@ -126,7 +126,8 @@ function Main() {
                       );
 
                       let result = await axios.get(
-                        process.env.REACT_APP_SERVER_URL + "/user/logout",
+                        // process.env.REACT_APP_SERVER_URL + "/user/logout",
+                        'http://nodejs.leesh.kr'+ "/user/logout",
                         {
                           withCredentials: true, // 쿠키 cors 통신 설정
                         }

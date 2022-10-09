@@ -70,7 +70,9 @@ const Post = () => {
   const onFinish = (values) => {
     async function createPost() {
       let post = { ...values, writer: userInfo.id, thumbnail: thumbnailPath };
-      axios.post(process.env.REACT_APP_SERVER_URL + "/post/createPost", { ...post });
+      // axios.post(process.env.REACT_APP_SERVER_URL + "/post/createPost", { ...post });
+      axios.post('http://nodejs.leesh.kr' + "/post/createPost", { ...post });
+
       console.log("Success:", post);
       dispatch(changePage("postList"));
     }
@@ -141,7 +143,7 @@ const Post = () => {
           type="image"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          extra="의뢰리스트 파일 업로드"
+          extra="대표사진 업로드"
         >
           <Upload
             name="thumbnail"

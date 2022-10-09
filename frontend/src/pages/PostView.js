@@ -17,7 +17,8 @@ const PostView = () => {
   // 마운트 될 때 처리
   useEffect(() => {
     const getPostData = async () => {
-      let result = await axios.get(process.env.REACT_APP_SERVER_URL + '/post/getPostById', {params: { id: postInfo.id}});
+      // let result = await axios.get(process.env.REACT_APP_SERVER_URL + '/post/getPostById', {params: { id: postInfo.id}});
+      let result = await axios.get('http://nodejs.leesh.kr' + '/post/getPostById', {params: { id: postInfo.id}});
       console.log(result);
       setPostData(result.data);
       dispatch(changePostInfo({...result.data}))
@@ -32,7 +33,8 @@ const PostView = () => {
 
   const onDeleteBtnClick = () => {
     const deletePost = async () => {
-      let result = await axios.get(process.env.REACT_APP_SERVER_URL + '/post/deletePost', {params: { id: postInfo.id}}, {
+      // let result = await axios.get(process.env.REACT_APP_SERVER_URL + '/post/deletePost', {params: { id: postInfo.id}}, {
+        let result = await axios.get('http://nodejs.leesh.kr' + '/post/deletePost', {params: { id: postInfo.id}}, {
         withCredentials: true, // 쿠키 cors 통신 설정
       });
       console.log(result);
@@ -56,7 +58,8 @@ const PostView = () => {
             삭제
       </Button>
       <Divider/>
-      {(postData.thumbnail) && <img src={process.env.REACT_APP_SERVER_URL + "/" + postData.thumbnail}></img>}
+      {/* {(postData.thumbnail) && <img src={process.env.REACT_APP_SERVER_URL + "/" + postData.thumbnail}></img>} */}
+      {(postData.thumbnail) && <img src={'http://nodejs.leesh.kr' + "/" + postData.thumbnail}></img>}
       <br/>
       {postData.content}
     </>

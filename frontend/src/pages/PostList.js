@@ -43,8 +43,10 @@ const App = () => {
   // 마운트 될 때 처리
   useEffect(() => {
     let getPostListData = async () => {
-      console.log(process.env.REACT_APP_SERVER_URL + "/post/getAllPosts");
-      let result = await axios.get(process.env.REACT_APP_SERVER_URL+"/post/getAllPosts",                         {
+      // console.log(process.env.REACT_APP_SERVER_URL + "/post/getAllPosts");
+      // let result = await axios.get(process.env.REACT_APP_SERVER_URL+"/post/getAllPosts",
+      let result = await axios.get('http://nodejs.leesh.kr'+"/post/getAllPosts",
+      {
         withCredentials: true, // 쿠키 cors 통신 설정
       });
       // let result = await axios.get("http://localhost:3030/post/getAllPosts");
@@ -104,7 +106,8 @@ const App = () => {
                 <img
                 width={272}
                 alt="logo"
-                src={(item.thumbnail) ? process.env.REACT_APP_SERVER_URL + "/" + item.thumbnail : null}
+                // src={(item.thumbnail) ? process.env.REACT_APP_SERVER_URL + "/" + item.thumbnail : null}
+                src={(item.thumbnail) ? 'http://nodejs.leesh.kr' + "/" + item.thumbnail : null}
               />
               }
 
