@@ -3,7 +3,8 @@ import React from "react";
 import { useNavigate } from "react-router";
 
 import { useSelector, useDispatch } from "react-redux";
-import { changePage, changePostInfo } from "../modules/ducks";
+
+import {changePage} from "../modules/page";
 
 import axios from "axios";
 import config from "../config";

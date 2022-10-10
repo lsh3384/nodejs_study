@@ -4,7 +4,7 @@ export const changePage = (page) => ( {type: PAGE, page});
 
 // 초기 상태
 const initialState = {
-  page: '',
+  page: 'PostList',
 };
 
 // reducer

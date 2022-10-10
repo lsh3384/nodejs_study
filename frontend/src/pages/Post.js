@@ -147,7 +147,8 @@ const Post = () => {
         >
           <Upload
             name="thumbnail"
-            action={process.env.REACT_APP_SERVER_URL + "/post/createThumbnail"}
+            // action={process.env.REACT_APP_SERVER_URL + "/post/createThumbnail"}
+            action={"http://nodejs.leesh.kr" + "/post/createThumbnail"}
             listType="picture-card"
             fileList={fileList}
             onPreview={handlePreview}

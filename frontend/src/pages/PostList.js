@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
-import { changePage, changePostInfo } from "../modules/ducks";
+
+import { changePage } from "../modules/page";
+import { changePostInfo } from "../modules/postInfo";
 
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import { Avatar, Button, List, Space } from 'antd';
