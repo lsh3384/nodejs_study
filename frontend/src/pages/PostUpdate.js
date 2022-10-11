@@ -37,8 +37,8 @@ const PostUpdate = () => {
     uid: '-1',
     name: 'image.png',
     status: 'done',
-    // url: process.env.REACT_APP_SERVER_URL + '/'+ postInfo.thumbnail,
-    url: 'http://nodejs.leesh.kr' + '/'+ postInfo.thumbnail,
+    url: process.env.REACT_APP_SERVER_URL + '/'+ postInfo.thumbnail,
+    // url: 'http://nodejs.leesh.kr' + '/'+ postInfo.thumbnail,
   }]);
 
   const handleCancel = () => setPreviewOpen(false);
@@ -80,8 +80,8 @@ const PostUpdate = () => {
 
   const onFinish = (values) => {
     let post = {...values, writer: userInfo.id, thumbnail: thumbnailPath, id: postInfo.id};
-    // axios.post(process.env.REACT_APP_SERVER_URL + "/post/updatePost", { ...post });
-    axios.post('http://nodejs.leesh.kr' + "/post/updatePost", { ...post });
+    axios.post(process.env.REACT_APP_SERVER_URL + "/post/updatePost", { ...post });
+    // axios.post('http://nodejs.leesh.kr' + "/post/updatePost", { ...post });
     console.log("Success:", post);
     dispatch(changePage('postList'));
 

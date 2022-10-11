@@ -70,8 +70,8 @@ const Post = () => {
   const onFinish = (values) => {
     async function createPost() {
       let post = { ...values, writer: userInfo.id, thumbnail: thumbnailPath };
-      // axios.post(process.env.REACT_APP_SERVER_URL + "/post/createPost", { ...post });
-      axios.post('http://nodejs.leesh.kr' + "/post/createPost", { ...post });
+      axios.post(process.env.REACT_APP_SERVER_URL + "/post/createPost", { ...post });
+      // axios.post('http://nodejs.leesh.kr' + "/post/createPost", { ...post });
 
       console.log("Success:", post);
       dispatch(changePage("postList"));
@@ -147,8 +147,8 @@ const Post = () => {
         >
           <Upload
             name="thumbnail"
-            // action={process.env.REACT_APP_SERVER_URL + "/post/createThumbnail"}
-            action={"http://nodejs.leesh.kr" + "/post/createThumbnail"}
+            action={process.env.REACT_APP_SERVER_URL + "/post/createThumbnail"}
+            // action={"http://nodejs.leesh.kr" + "/post/createThumbnail"}
             listType="picture-card"
             fileList={fileList}
             onPreview={handlePreview}
