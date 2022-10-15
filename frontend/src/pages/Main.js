@@ -5,7 +5,6 @@ import PostView from "./PostView";
 import PostUpdate from "./PostUpdate";
 import PostList from "./PostList";
 import Success from "./Success";
-import config from "../config";
 
 import { Button, Menu, Layout } from "antd";
 
@@ -66,8 +65,7 @@ function Main() {
 
   // 마운트 될 때 처리
   useEffect(() => {
-    console.log('!!!!!!!!!!!!!!!!',userInfo.status);
-    console.log('!!!!!!!!!!!!!!!!',currentPage.page);
+
   }, [])
 
 
@@ -126,7 +124,6 @@ function Main() {
                       );
 
                       let result = await axios.get(
-                        // process.env.REACT_APP_SERVER_URL + "/user/logout",
                         'http://nodejs.leesh.kr'+ "/user/logout",
                         {
                           withCredentials: true, // 쿠키 cors 통신 설정
@@ -182,7 +179,6 @@ function Main() {
                 minHeight: 360,
               }}
             >
-              {/* {currentPage} */}
               <Component state={currentPage.page}></Component>
             </div>
           </Content>

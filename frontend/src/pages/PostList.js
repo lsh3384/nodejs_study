@@ -3,39 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { changePage } from "../modules/page";
 import { changePostInfo } from "../modules/postInfo";
 
-import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
-import { Avatar, Button, List, Space } from 'antd';
+import { Button, List } from 'antd';
 import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 
-import config from '../config';
-
-const data = Array.from({
-  length: 23,
-}).map((_, i) => ({
-  href: 'https://ant.design',
-  title: `ant design part ${i}`,
-  avatar: 'https://joeschmoe.io/api/v1/random',
-  description:
-    'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-  content:
-    'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-}));
-
-const IconText = ({ icon, text }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-);
-
 const App = () => {
   const [postListData, setPostListData] = useState([])
-
   const userInfo = useSelector((state) => state.userInfo);
-  const currentPage = useSelector((state) => state.page);
-
   const dispatch = useDispatch();
 
   const onBtnClick = () => {
@@ -45,14 +20,10 @@ const App = () => {
   // 마운트 될 때 처리
   useEffect(() => {
     let getPostListData = async () => {
-      // console.log(process.env.REACT_APP_SERVER_URL + "/post/getAllPosts");
       let result = await axios.get(process.env.REACT_APP_SERVER_URL+"/post/getAllPosts",
-      // let result = await axios.get('http://nodejs.leesh.kr'+"/post/getAllPosts",
       {
         withCredentials: true, // 쿠키 cors 통신 설정
       });
-      // let result = await axios.get("http://localhost:3030/post/getAllPosts");
-      console.log(result.data);
       setPostListData(result.data.map((data, i)=> {
         return ({
           ...data,
@@ -63,15 +34,12 @@ const App = () => {
       }));
     };
     getPostListData();
-
-
   }, []);
 
   // 페이지 이동 처리
   const moveToPage = (id) => {
     dispatch(changePage('postView'));
     dispatch(changePostInfo({id}));
-    console.log('page move to '+ id);
   }
 
   return (
@@ -91,16 +59,12 @@ const App = () => {
         dataSource={postListData}
         footer={
           <div>
-            {/* <b>ant design</b> footer part */}
           </div>
         }
         renderItem={(item) => (
           <List.Item
             key={item.id}
             actions={[
-              // <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-              // <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-              // <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
             ]}
             extra={
               <>
@@ -109,16 +73,12 @@ const App = () => {
                 width={272}
                 alt="logo"
                 src={(item.thumbnail) ? process.env.REACT_APP_SERVER_URL + "/" + item.thumbnail : null}
-                // src={(item.thumbnail) ? 'http://nodejs.leesh.kr' + "/" + item.thumbnail : null}
               />
               }
-
               </>
-
             }
           >
             <List.Item.Meta
-              // avatar={<Avatar src={item.avatar} />}
               title={<a onClick={(e)=> {e.preventDefault();moveToPage(item.id)}} href={item.href}>{item.title}</a>}
               description={item.description}
             />

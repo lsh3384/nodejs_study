@@ -5,17 +5,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { changePage } from "../modules/page";
 import { changePostInfo } from "../modules/postInfo";
 
-import { Button, Form, Input, Table, Divider } from "antd";
+import { Button, Divider } from "antd";
 import axios from "axios";
-import config from "../config";
 
 import moment from "moment";
 
 const PostView = () => {
   const postInfo = useSelector((state)=> state.postInfo);
   const userInfo = useSelector((state)=> state.userInfo);
-
-  const currentPage = useSelector((state) => state.page);
+  
   const [postData, setPostData] = useState({});
   const dispatch = useDispatch();
 
@@ -23,10 +21,6 @@ const PostView = () => {
   useEffect(() => {
     const getPostData = async () => {
       let result = await axios.get(process.env.REACT_APP_SERVER_URL + '/post/getPostById', {params: { id: postInfo.id}});
-      // let result = await axios.get('http://nodejs.leesh.kr' + '/post/getPostById', {params: { id: postInfo.id}});
-      console.log('poasInfo.id!!!!!!!')
-      console.log(postInfo.id);
-      console.log(result);
       setPostData(result.data);
       dispatch(changePostInfo({...result.data}))
     }
@@ -41,7 +35,6 @@ const PostView = () => {
   const onDeleteBtnClick = () => {
     const deletePost = async () => {
       let result = await axios.get(process.env.REACT_APP_SERVER_URL + '/post/deletePost', {params: { id: postInfo.id}}, {
-        // let result = await axios.get('http://nodejs.leesh.kr' + '/post/deletePost', {params: { id: postInfo.id}}, {
         withCredentials: true, // 쿠키 cors 통신 설정
       });
       console.log(result);
@@ -56,7 +49,6 @@ const PostView = () => {
   return (
     <>
       <h2>{postData.title}</h2>
-      {/* {postData.writer} | {postData.createdAt.slice(0, 10)}  */}
       {postData.writer} | {moment(postData.createdAt).format('YYYY-MM-DD HH:mm:ss')}
 
       {(userInfo.status==="login_success")?
@@ -69,7 +61,6 @@ const PostView = () => {
       </Button>
       </>:<></>}
       <Divider/>
-      {/* {(postData.thumbnail) && <img src={process.env.REACT_APP_SERVER_URL + "/" + postData.thumbnail}></img>} */}
       {(postData.thumbnail) && <img src={'http://nodejs.leesh.kr' + "/" + postData.thumbnail}></img>}
       <br/>
       {postData.content}

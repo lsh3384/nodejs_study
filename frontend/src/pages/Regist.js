@@ -1,21 +1,16 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
-import { useNavigate } from "react-router";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import {changePage} from "../modules/page";
 
 import axios from "axios";
-import config from "../config";
 
 const Regist = () => {
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = (values) => {
     axios.post(process.env.REACT_APP_SERVER_URL + '/user/insertUser', {...values})
-    // axios.post('http://nodejs.leesh.kr' + '/user/insertUser', {...values})
-    // navigate('/success');
     dispatch(changePage('success'));
     console.log("Success:", values);
   };
@@ -81,19 +76,6 @@ const Regist = () => {
           >
             <Input.Password />
           </Form.Item>
-
-          {/* <Form.Item
-            label="전화번호"
-            name="phone"
-            rules={[
-              {
-                required: true,
-                message: "전화번호를 입력해주세요.",
-              },
-            ]}
-          >
-            <Input/>
-          </Form.Item> */}
 
           <Form.Item
             label="이메일"

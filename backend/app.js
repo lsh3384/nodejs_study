@@ -10,8 +10,7 @@ const cookieParser = require("cookie-parser");
 const Config = require('./config');
 const AuthMiddleware = require("./middlewares/authMiddleware");
 
-
-const app = express(); // 클라이언트와 통신
+const app = express();
 
 app.use(cookieParser());
 let corsOptions = {
@@ -44,20 +43,19 @@ app.use(
   })
 );
 
-
 var flash = require('connect-flash');
 app.use(flash())
 
 app.use('/static', express.static(path.join(__dirname, "/static")));
+
+console.log(process.env);
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
 app.use(AuthMiddleware.initialize());
 app.use(AuthMiddleware.session());
-
 
 app.use(require("./routes/indexRoutes"));
 

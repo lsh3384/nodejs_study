@@ -18,18 +18,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-function isAuthenticated(req, res, next) {
+const isAuthenticated = (req, res, next) => {
+  console
   if(req.isAuthenticated()) {
     next();
   } else {
+    console.log('req.isAuthenticated()', req.isAuthenticated());
     res.status(403).render();
   }
 }
 
 router.get("/getAllPosts", PostController.getAllPosts);
-router.get("/getPostById", function (req, res, next) { console.log(req.isAuthenticated()); next() }, PostController.getPostById);
-router.get("/deletePost", isAuthenticated,PostController.deletePost);
+// router.get("/getPostById", function (req, res, next) { console.log(req.isAuthenticated()); next() }, PostController.getPostById);
+router.get("/getPostById", isAuthenticated, PostController.getPostById);
+router.get("/deletePost", isAuthenticated, PostController.deletePost);
 router.post("/createPost", isAuthenticated, PostController.createPost);
 router.post("/updatePost", isAuthenticated, PostController.updatePost);
-router.post("/createThumbnail", isAuthenticated, upload.single('thumbnail'), PostController.createThumbnail);
+router.post("/createThumbnail", isAuthenticated.bind(this), upload.single('thumbnail'), PostController.createThumbnail);
 module.exports = router;

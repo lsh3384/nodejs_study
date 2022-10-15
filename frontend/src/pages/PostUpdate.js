@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {useSelector, useDispatch} from 'react-redux';
 import { Button, Form, Input, Upload, Modal, message } from "antd";
-import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import {changePage} from '../modules/page';
 
 import axios from "axios";
-
-
-import config from '../config';
 
 const { TextArea } = Input;
 
@@ -26,20 +23,32 @@ const getBase64 = (file) =>
 const PostUpdate = () => {
   const userInfo = useSelector(state => state.userInfo);
   const postInfo = useSelector(state => state.postInfo);
-  const currentPage = useSelector((state) => state.page);
   const dispatch = useDispatch();
 
   const [thumbnailPath, setThumbnailPath] = useState(postInfo.thumbnail);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState([{
-    uid: '-1',
-    name: 'image.png',
-    status: 'done',
-    url: process.env.REACT_APP_SERVER_URL + '/'+ postInfo.thumbnail,
-    // url: 'http://nodejs.leesh.kr' + '/'+ postInfo.thumbnail,
-  }]);
+  const [fileList, setFileList] = useState([
+    
+  ]);
+
+  useEffect(() => {
+    if (postInfo.thumbnail.length > 0 && postInfo.thumbnail !== 'NULL') {
+      console.log(postInfo.thumbnail.length > 0);
+      console.log('thumbnail is not null');
+      console.log(postInfo.thumbnail);
+      console.log(postInfo.thumbnail.length);
+      setFileList([
+        {
+        uid: postInfo.id,
+        name: (postInfo.thumbnail).split('__').slice(-1)[0],
+        // name: postInfo.thumbnail,
+        status: "done",
+        url: process.env.REACT_APP_SERVER_URL + "/" + postInfo.thumbnail,
+      }])
+    }
+  }, [])
 
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
@@ -55,14 +64,10 @@ const PostUpdate = () => {
   const handleChange = (info) => {
     if (info.file.status === 'done') {
       message.success(`${info.file.name} file uploaded successfully`);
-      console.log(info.file.response);
       setThumbnailPath(info.file.response.path);
     }
 
-
-    // console.log(newFileList)
     setFileList(info.fileList);
-    // console.log(event);
   }
 
   const uploadButton = (
@@ -81,14 +86,8 @@ const PostUpdate = () => {
   const onFinish = (values) => {
     let post = {...values, writer: userInfo.id, thumbnail: thumbnailPath, id: postInfo.id};
     axios.post(process.env.REACT_APP_SERVER_URL + "/post/updatePost", { ...post });
-    // axios.post('http://nodejs.leesh.kr' + "/post/updatePost", { ...post });
     console.log("Success:", post);
     dispatch(changePage('postList'));
-
-    // console.log(values.title);
-    // console.log(values.content);
-    // console.log(userInfo.id);
-    // console.log(userInfo.name);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -116,9 +115,6 @@ const PostUpdate = () => {
         wrapperCol={{
           span: 10,
         }}
-        // initialValues={{
-        //   remember: true,
-        // }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -144,7 +140,6 @@ const PostUpdate = () => {
           ]}
         >
           <Input placeholder="제목을 입력해주세요."/>
-          {/* <input value={postInfo.title}></input> */}
         </Form.Item>
         <Form.Item
           label="내용"
@@ -160,7 +155,6 @@ const PostUpdate = () => {
         </Form.Item>
 
         <Form.Item
-          // name="upload"
           label="Upload"
           type="image"
           valuePropName="fileList"
@@ -176,7 +170,10 @@ const PostUpdate = () => {
             onChange={handleChange}
             maxCount={1}
           >
-            {fileList.length >= 2 ? null : uploadButton}
+            {
+              // (postInfo.thumbnail !== '' || postInfo.thumbnail !== 'NULL') ?
+                (fileList.length >= 2 ? null : uploadButton)
+            }
           </Upload>
           <Modal
             open={previewOpen}
@@ -192,25 +189,7 @@ const PostUpdate = () => {
               src={previewImage}
             />
           </Modal>
-          {/* <Upload
-            name="thumbnail"
-            action="http://localhost:3030/post/createThumbnail"
-            listType="picture"
-          >
-            <Button icon={<UploadOutlined />}>클릭해서 첨부하기</Button>
-          </Upload> */}
         </Form.Item>
-
-        {/* <Form.Item
-          wrapperCol={{
-            offset: 0,
-            span: 24,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            업로드
-          </Button>
-        </Form.Item> */}
 
         <Form.Item
           wrapperCol={{

@@ -1,11 +1,9 @@
-import config from "../config";
-
 import React, { useState } from "react";
 
 import {useSelector, useDispatch} from 'react-redux';
 
 import { Button, Form, Input, Upload, Modal, message } from "antd";
-import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 
 import { changePage } from "../modules/page";
 
@@ -71,9 +69,6 @@ const Post = () => {
     async function createPost() {
       let post = { ...values, writer: userInfo.id, thumbnail: thumbnailPath };
       axios.post(process.env.REACT_APP_SERVER_URL + "/post/createPost", { ...post });
-      // axios.post('http://nodejs.leesh.kr' + "/post/createPost", { ...post });
-
-      console.log("Success:", post);
       dispatch(changePage("postList"));
     }
 
@@ -81,7 +76,7 @@ const Post = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+
   };
 
 
@@ -148,7 +143,6 @@ const Post = () => {
           <Upload
             name="thumbnail"
             action={process.env.REACT_APP_SERVER_URL + "/post/createThumbnail"}
-            // action={"http://nodejs.leesh.kr" + "/post/createThumbnail"}
             listType="picture-card"
             fileList={fileList}
             onPreview={handlePreview}
@@ -164,7 +158,7 @@ const Post = () => {
             onCancel={handleCancel}
           >
             <img
-              alt="example"
+              alt="thumbnail"
               style={{
                 width: "100%",
               }}
